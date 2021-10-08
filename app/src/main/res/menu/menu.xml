@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="HFR"
+        android:id="@+id/hfr"
+        android:icon="@drawable/ic_hospital"/>
+
+    <item android:title="digiDoc"
+        android:id="@+id/digiDoc"
+        android:icon="@drawable/ic_digidoc"/>
+
+    <item android:title="Records"
+        android:id="@+id/records"
+        android:icon="@drawable/ic_records"/>
+
+    <item android:title="TeleMedic"
+        android:id="@+id/tele"
+        android:icon="@drawable/ic_tele_and_epharma"/>
+
+    <item
+        android:title="Home"
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_profile"/>
+
+</menu>
