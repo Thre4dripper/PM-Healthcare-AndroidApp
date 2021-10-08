@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "261288756776",
+    "project_id": "pm-dhm",
+    "storage_bucket": "pm-dhm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261288756776:android:7bcb98c5bc52e985aa171d",
+        "android_client_info": {
+          "package_name": "com.example.pmhealthcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "261288756776-nrv3f3a3vu1uh2q22g0k0tj9gjo43etf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pmhealthcare",
+            "certificate_hash": "7685b3544a33058aa15c57a23347a5f2ea88e514"
+          }
+        },
+        {
+          "client_id": "261288756776-2fukoogrcadgisrniv0b6abgl7qfifpo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTruYfdpG1Dwu8Gdo8FGmzujyTaWK5x60"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "261288756776-2fukoogrcadgisrniv0b6abgl7qfifpo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
