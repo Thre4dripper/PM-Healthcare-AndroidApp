@@ -41,8 +41,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.profile);
 
         InitFragments();
-        AUTH();
-       // System.out.println(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        //AUTH();
     }
 
     public void AUTH(){
@@ -64,17 +63,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK && requestCode==100){
+        if(resultCode == RESULT_CANCELED && requestCode==100){
+            finish();
+        }
+        else {
             FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
             System.out.println(user.getUid());
             if(user.getMetadata().getCreationTimestamp()==user.getMetadata().getLastSignInTimestamp())
-            Toast.makeText(this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Registration Successful", Toast.LENGTH_SHORT).show();
             else
                 Toast.makeText(this, "Welcome Back", Toast.LENGTH_SHORT).show();
-        }
-        else {
-           // Toast.makeText(this, "not logged in", Toast.LENGTH_SHORT).show();
-            finish();
         }
     }
 
