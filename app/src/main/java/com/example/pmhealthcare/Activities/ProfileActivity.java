@@ -7,13 +7,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.example.pmhealthcare.R;
 import com.example.pmhealthcare.Utils.JsonParser;
 import com.google.android.material.textfield.TextInputEditText;
-
-import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -51,10 +48,10 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         for (int i=0;i<=121;i++){
             years[i]=String.valueOf(2021-i);
         }
-        ArrayAdapter<String> yearsAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,years);
+        ArrayAdapter<String> yearsAdapter=new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,years);
         yearSpinner.setAdapter(yearsAdapter);
 
-        ArrayAdapter<String> monthAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,months);
+        ArrayAdapter<String> monthAdapter=new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,months);
         monthSpinner.setAdapter(monthAdapter);
 
         yearSpinner.setOnItemSelectedListener(this);
@@ -64,13 +61,15 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
     /**==================================== METHODS FOR STATE AND DISTRICTS SPINNERS ================================**/
     public void setStateAndDistrictSpinners(){
-        String[] states;
+        String[] states = JsonParser.getStatesFromJSON(this);
 
-        states= JsonParser.getStates(this);
-
-        ArrayAdapter<String> statesAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,states);
+        ArrayAdapter<String> statesAdapter=new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,states);
         stateSpinner.setAdapter(statesAdapter);
+
+        stateSpinner.setOnItemSelectedListener(this);
+
     }
+
     /**========================================== SPINNERS ON ITEM SELECTED =========================================**/
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -109,9 +108,15 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             for(int i=0;i<number;i++)
                 dates[i]=String.valueOf(i+1);
 
-            ArrayAdapter<String> datesAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,dates);
+            ArrayAdapter<String> datesAdapter=new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,dates);
             dateSpinner.setAdapter(datesAdapter);
 
+        }
+        else if(parent==stateSpinner){
+            String[] districts=JsonParser.getDistrictsFromJSON(this,stateSpinner.getSelectedItem().toString().trim());
+
+            ArrayAdapter<String> districtAdapter=new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,districts);
+            districtSpinner.setAdapter(districtAdapter);
         }
     }
 
