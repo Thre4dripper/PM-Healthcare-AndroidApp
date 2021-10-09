@@ -9,18 +9,18 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.pmhealthcare.Activities.MainActivity;
+import com.example.pmhealthcare.ProfileActivity;
 import com.example.pmhealthcare.R;
 import com.firebase.ui.auth.AuthUI;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.material.button.MaterialButton;
 
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     CardView signOutBtn;
+    MaterialButton editProfileButton, viewProfileButton;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -32,23 +32,32 @@ public class ProfileFragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_profile, container, false);
 
         signOutBtn=view.findViewById(R.id.sign_out_button);
+        editProfileButton =view.findViewById(R.id.edit_profile_button);
+        viewProfileButton =view.findViewById(R.id.view_profile_button);
 
 
-        setSignOutBtn();
+        InitUIElements();
+
 
         return view;
     }
 
-    public void setSignOutBtn(){
+    public void InitUIElements(){
 
-        signOutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AuthUI.getInstance().signOut(getActivity());
-                Toast.makeText(getActivity(), "Signed Out", Toast.LENGTH_SHORT).show();
-                getActivity().finish();
-            }
-        });
+        signOutBtn.setOnClickListener(this);
+        editProfileButton.setOnClickListener(this);
+        viewProfileButton.setOnClickListener(this);
+    }
 
+    @Override
+    public void onClick(View view) {
+        if(view==signOutBtn){
+            AuthUI.getInstance().signOut(getActivity());
+            Toast.makeText(getActivity(), "Signed Out", Toast.LENGTH_SHORT).show();
+            getActivity().finish();
+        }
+        else if(view==editProfileButton){
+            startActivity(new Intent(getActivity(), ProfileActivity.class));
+        }
     }
 }
