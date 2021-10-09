@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PMHealthcare">
         <activity
-            android:name=".ProfileActivity"
+            android:name=".Activities.ProfileActivity"
             android:exported="true" />
         <activity
             android:name=".Activities.MainActivity"

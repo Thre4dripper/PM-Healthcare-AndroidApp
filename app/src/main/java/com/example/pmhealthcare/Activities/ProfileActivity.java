@@ -1,4 +1,4 @@
-package com.example.pmhealthcare;
+package com.example.pmhealthcare.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.pmhealthcare.R;
+import com.example.pmhealthcare.Utils.JsonParser;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.List;
 public class ProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     TextInputEditText nameTextView,fatherNameTextView,motherNameTextView;
-    Spinner yearSpinner,monthSpinner,dateSpinner;
+    Spinner yearSpinner,monthSpinner,dateSpinner,stateSpinner,districtSpinner;
 
 
 
@@ -36,12 +38,15 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         monthSpinner=findViewById(R.id.month_spinner);
         dateSpinner=findViewById(R.id.date_spinner);
 
+        stateSpinner=findViewById(R.id.state_spinner);
+        districtSpinner=findViewById(R.id.district_spinner);
+
         setDateSpinners();
+        setStateAndDistrictSpinners();
     }
 
+    /**========================================== METHODS FOR DOB SPINNERS =========================================**/
     public void setDateSpinners(){
-
-
 
         for (int i=0;i<=121;i++){
             years[i]=String.valueOf(2021-i);
@@ -57,6 +62,16 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         dateSpinner.setOnItemSelectedListener(this);
     }
 
+    /**==================================== METHODS FOR STATE AND DISTRICTS SPINNERS ================================**/
+    public void setStateAndDistrictSpinners(){
+        String[] states;
+
+        states= JsonParser.getStates(this);
+
+        ArrayAdapter<String> statesAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,states);
+        stateSpinner.setAdapter(statesAdapter);
+    }
+    /**========================================== SPINNERS ON ITEM SELECTED =========================================**/
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
