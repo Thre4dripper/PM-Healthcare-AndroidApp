@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.pmhealthcare.ProfileActivity;
+import com.example.pmhealthcare.Activities.ProfileActivity;
 import com.example.pmhealthcare.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.button.MaterialButton;
