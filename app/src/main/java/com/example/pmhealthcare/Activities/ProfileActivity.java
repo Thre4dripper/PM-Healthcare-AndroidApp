@@ -1,5 +1,6 @@
 package com.example.pmhealthcare.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -7,22 +8,25 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pmhealthcare.Fragments.ProfileFragment;
 import com.example.pmhealthcare.R;
 import com.example.pmhealthcare.Utils.JsonParser;
 import com.example.pmhealthcare.database.User;
+import com.firebase.ui.auth.data.model.IntentRequiredException;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.util.Arrays;
-
 public class ProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+
+    ScrollView editModeScroll,viewScrollMode;
 
     TextInputEditText nameField, heightField, weightField, fatherNameField, motherNameField, pinCodeField, addressField;
     Spinner yearSpinner, monthSpinner, dateSpinner, stateSpinner, districtSpinner;
@@ -43,6 +47,19 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        editModeScroll =findViewById(R.id.edit_mode_scroll);
+
+        Intent intent=getIntent();
+
+        if(intent.getIntExtra(ProfileFragment.USER_DETAILS_MODE_KEY,-1)==0)
+        {
+            editModeScroll.setVisibility(View.VISIBLE);
+            InitEditModeUIElements();
+        }
+    }
+
+    public void InitEditModeUIElements(){
 
         nameField = findViewById(R.id.name_field);
         heightField = findViewById(R.id.height_field);
@@ -79,8 +96,8 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         getUserInformation();
         saveButton.setOnClickListener(this);
-    }
 
+    }
     /**
      * ========================================== METHODS FOR DOB SPINNERS =========================================
      **/
