@@ -10,10 +10,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pmhealthcare.Activities.ProfileActivity;
 import com.example.pmhealthcare.R;
+import com.example.pmhealthcare.database.User;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -21,8 +23,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
+
+    TextView userNameTextView;
     CardView signOutBtn,feedbackBtn;
     MaterialButton editProfileButton, viewProfileButton;
+
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -34,6 +40,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         View view=inflater.inflate(R.layout.fragment_profile, container, false);
 
 
+        userNameTextView=view.findViewById(R.id.user_name_text_view);
         editProfileButton =view.findViewById(R.id.edit_profile_button);
         viewProfileButton =view.findViewById(R.id.view_profile_button);
         signOutBtn=view.findViewById(R.id.sign_out_button);
@@ -41,8 +48,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
 
         InitUIElements();
-
-
         return view;
     }
 
@@ -52,6 +57,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         editProfileButton.setOnClickListener(this);
         viewProfileButton.setOnClickListener(this);
         feedbackBtn.setOnClickListener(this);
+
+        String userName=User.getName(getContext());
+        if(userName.equals(""))
+            userNameTextView.setText("User Name");
+        else userNameTextView.setText(userName);
     }
 
     @Override
