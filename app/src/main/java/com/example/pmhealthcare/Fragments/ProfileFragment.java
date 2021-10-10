@@ -1,6 +1,7 @@
 package com.example.pmhealthcare.Fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -19,7 +20,7 @@ import com.google.android.material.button.MaterialButton;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
-    CardView signOutBtn;
+    CardView signOutBtn,feedbackBtn;
     MaterialButton editProfileButton, viewProfileButton;
     public ProfileFragment() {
         // Required empty public constructor
@@ -31,9 +32,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_profile, container, false);
 
-        signOutBtn=view.findViewById(R.id.sign_out_button);
+
         editProfileButton =view.findViewById(R.id.edit_profile_button);
         viewProfileButton =view.findViewById(R.id.view_profile_button);
+        signOutBtn=view.findViewById(R.id.sign_out_button);
+        feedbackBtn=view.findViewById(R.id.feedback_button);
 
 
         InitUIElements();
@@ -47,6 +50,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         signOutBtn.setOnClickListener(this);
         editProfileButton.setOnClickListener(this);
         viewProfileButton.setOnClickListener(this);
+        feedbackBtn.setOnClickListener(this);
     }
 
     @Override
@@ -58,6 +62,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
         else if(view==editProfileButton){
             startActivity(new Intent(getActivity(), ProfileActivity.class));
+        }
+        else if(view==feedbackBtn){
+
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.putExtra(Intent.EXTRA_EMAIL,new String[]{"ijlalahmad845@gmail.com"});
+            intent.setData(Uri.parse("mailto:"));
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
+
+                startActivity(intent);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.pmhealthcare.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import com.example.pmhealthcare.Fragments.TeleMedicFragment;
 import com.example.pmhealthcare.Networking.Firebase;
 import com.example.pmhealthcare.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.profile);
 
         InitFragments();
-        AUTH();
+        //AUTH();
     }
 
     /**====================================== METHOD FOR TRIGGERING FIREBASE AUTH ===================================**/

@@ -56,7 +56,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:hint="Name">
+                android:hint="Name"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/name_field"
@@ -141,6 +142,17 @@
                 android:text="Gender"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/gender_error_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Required*"
+                android:textColor="#DD3939"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,21 +160,21 @@
                 android:padding="8dp">
 
                 <RadioButton
-                    android:id="@+id/maleRadio"
+                    android:id="@+id/male_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Male"
                     android:layout_weight="1"/>
 
                 <RadioButton
-                    android:id="@+id/femaleRadio"
+                    android:id="@+id/female_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Female"
                     android:layout_weight="1"/>
 
                 <RadioButton
-                    android:id="@+id/othersRadio"
+                    android:id="@+id/others_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Others"
@@ -237,6 +249,15 @@
                     android:inputType="textMultiLine" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SAVE"
+                android:layout_gravity="end"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"/>
         </LinearLayout>
 
     </ScrollView>
