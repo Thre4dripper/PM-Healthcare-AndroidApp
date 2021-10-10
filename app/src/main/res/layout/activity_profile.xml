@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -28,12 +29,13 @@
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView" />
 
+    <!-- EDIT MODE SCROLL VIEW-->
     <ScrollView
         android:id="@+id/edit_mode_scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,15 +88,15 @@
                     android:id="@+id/year_spinner"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_margin="8dp"/>
+                    android:layout_margin="8dp"
+                    android:layout_weight="1" />
 
                 <Spinner
                     android:id="@+id/month_spinner"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_margin="8dp"/>
+                    android:layout_margin="8dp"
+                    android:layout_weight="1" />
 
                 <Spinner
                     android:id="@+id/date_spinner"
@@ -118,16 +120,16 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
                     android:hint="Height"
                     app:endIconMode="clear_text"
-                    app:suffixText="cm"
-                    android:layout_weight="1">
+                    app:suffixText="cm">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/height_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"/>
+                        android:inputType="number" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -138,16 +140,16 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
                     android:hint="Weight"
                     app:endIconMode="clear_text"
-                    app:suffixText="kg"
-                    android:layout_weight="1">
+                    app:suffixText="kg">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/weight_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"/>
+                        android:inputType="number" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -171,7 +173,7 @@
                 android:text="Required*"
                 android:textColor="#DD3939"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <RadioGroup
                 android:layout_width="match_parent"
@@ -183,22 +185,22 @@
                     android:id="@+id/male_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Male"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:text="Male" />
 
                 <RadioButton
                     android:id="@+id/female_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Female"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:text="Female" />
 
                 <RadioButton
                     android:id="@+id/others_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Others"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:text="Others" />
 
             </RadioGroup>
 
@@ -256,8 +258,7 @@
                 android:id="@+id/state_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                />
+                android:layout_margin="16dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -271,8 +272,7 @@
                 android:id="@+id/district_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                />
+                android:layout_margin="16dp" />
 
             <com.google.android.material.textfield.TextInputLayout
 
@@ -285,10 +285,10 @@
                 android:hint="Pincode">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/pincode_text_field"
+                    android:id="@+id/pincode_edit_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"/>
+                    android:inputType="number" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -329,50 +329,50 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <CheckBox
                         android:id="@+id/weak_eyesight_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Weak Eyesight"/>
+                        android:text="Weak Eyesight" />
 
                     <CheckBox
                         android:id="@+id/diabetic_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Diabetic"/>
+                        android:text="Diabetic" />
 
                     <CheckBox
                         android:id="@+id/respiratory_disease_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Respiratory Disease"/>
+                        android:text="Respiratory Disease" />
 
                     <CheckBox
                         android:id="@+id/alzheimer_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Alzheimer"/>
+                        android:text="Alzheimer" />
 
                     <CheckBox
                         android:id="@+id/heart_disease_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Heart Disease"/>
+                        android:text="Heart Disease" />
 
                     <CheckBox
                         android:id="@+id/overweight_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Overweight"/>
+                        android:text="Overweight" />
 
                     <CheckBox
                         android:id="@+id/handicapped_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Handicapped"/>
+                        android:text="Handicapped" />
 
 
                 </LinearLayout>
@@ -380,8 +380,8 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                 </LinearLayout>
 
@@ -391,12 +391,228 @@
                 android:id="@+id/save_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SAVE"
                 android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:layout_marginEnd="16dp"/>
+                android:text="SAVE" />
         </LinearLayout>
 
     </ScrollView>
 
+    <!-- VIEW MODE SCROLL VIEW-->
+    <ScrollView
+        android:id="@+id/view_mode_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/ProfileViewModeHeaderTextFields"
+                        android:text="Personal Details :-" />
+
+                    <TextView
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Name -" />
+
+                    <TextView
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Date of Birth -" />
+
+                    <TextView
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Height -" />
+
+                    <TextView
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Weight -" />
+
+                    <TextView
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Gender -" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/ProfileViewModeHeaderTextFields"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/name_text_field"
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Name -" />
+
+                    <TextView
+                        android:id="@+id/dob_text_field"
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Date of Birth -" />
+
+                    <TextView
+                        android:id="@+id/height_text_field"
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Height -" />
+
+                    <TextView
+                        android:id="@+id/weight_text_field"
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Weight -" />
+
+                    <TextView
+                        android:id="@+id/gender_text_field"
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Gender -" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/ProfileViewModeHeaderTextFields"
+                        android:text="Family Details :-" />
+
+                    <TextView
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Father's Name -" />
+
+                    <TextView
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Mother's Name -" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/ProfileViewModeHeaderTextFields"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/father_name_text_field"
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Father's Name -" />
+
+                    <TextView
+                        android:id="@+id/mother_name_text_field"
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Mother's Name -" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/ProfileViewModeHeaderTextFields"
+                        android:text="Location Details :-" />
+
+                    <TextView
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="State -" />
+
+                    <TextView
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="District -" />
+
+                    <TextView
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="PinCode -" />
+
+                    <TextView
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Address -" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/ProfileViewModeHeaderTextFields"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/state_text_field"
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="State -" />
+
+                    <TextView
+                        android:id="@+id/district_text_field"
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="District -" />
+
+                    <TextView
+                        android:id="@+id/pincode_text_field"
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="PinCode -" />
+
+                    <TextView
+                        android:id="@+id/address_text_field"
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Address -" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <TextView
+                style="@style/ProfileViewModeHeaderTextFields"
+                android:layout_height="wrap_content"
+                android:text="Special Diseases -" />
+
+
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

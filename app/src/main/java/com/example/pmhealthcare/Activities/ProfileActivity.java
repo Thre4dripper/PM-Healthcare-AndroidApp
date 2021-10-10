@@ -19,7 +19,6 @@ import com.example.pmhealthcare.Fragments.ProfileFragment;
 import com.example.pmhealthcare.R;
 import com.example.pmhealthcare.Utils.JsonParser;
 import com.example.pmhealthcare.database.User;
-import com.firebase.ui.auth.data.model.IntentRequiredException;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -49,14 +48,20 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         setContentView(R.layout.activity_profile);
 
         editModeScroll =findViewById(R.id.edit_mode_scroll);
+        viewScrollMode=findViewById(R.id.view_mode_scroll);
 
         Intent intent=getIntent();
 
-        if(intent.getIntExtra(ProfileFragment.USER_DETAILS_MODE_KEY,-1)==0)
-        {
+        if(intent.getIntExtra(ProfileFragment.USER_DETAILS_MODE_KEY,-1)==0) {
             editModeScroll.setVisibility(View.VISIBLE);
+            viewScrollMode.setVisibility(View.GONE);
             InitEditModeUIElements();
         }
+        else if(intent.getIntExtra(ProfileFragment.USER_DETAILS_MODE_KEY,-1)==1){
+            editModeScroll.setVisibility(View.GONE);
+            viewScrollMode.setVisibility(View.VISIBLE);
+        }
+
     }
 
     public void InitEditModeUIElements(){
@@ -80,7 +85,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         stateSpinner = findViewById(R.id.state_spinner);
         districtSpinner = findViewById(R.id.district_spinner);
 
-        pinCodeField = findViewById(R.id.pincode_text_field);
+        pinCodeField = findViewById(R.id.pincode_edit_field);
         addressField = findViewById(R.id.full_address);
 
         specialDiseases = new CheckBox[7];
