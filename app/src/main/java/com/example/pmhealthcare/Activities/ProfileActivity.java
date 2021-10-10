@@ -25,15 +25,16 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class ProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
-    ScrollView editModeScroll,viewScrollMode;
+    ScrollView editModeScroll, viewScrollMode;
 
+    //For Edit Mode
     TextInputEditText nameField, heightField, weightField, fatherNameField, motherNameField, pinCodeField, addressField;
     Spinner yearSpinner, monthSpinner, dateSpinner, stateSpinner, districtSpinner;
     MaterialButton saveButton;
     RadioButton maleRadio, femaleRadio, othersRadio;
 
     TextView genderErrorLabel;
-    CheckBox[] specialDiseases;
+    CheckBox[] specialDiseaseCheckboxes;
 
 
     String[] years = new String[122];
@@ -42,29 +43,67 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
     int dateSelection = 0, districtSelection = 0;
 
+
+    //For View Mode
+    TextView nameTextField, dobTextField, heightTextField, weightTextField, genderTextField;
+    TextView fatherNameTextField, motherNameTextField;
+    TextView stateTextField, districtTextField, pinCodeTextField, addressTextField;
+    TextView[] specialDiseasesTextFields;
+
+
+    //For both Modes
+    String userName;
+
+    int year = 2021;
+    int month = 0;
+    int date = 0;
+    String DOB;
+
+    int height;
+    int weight;
+
+    String gender;
+
+    String fatherName;
+    String motherName;
+
+    int statePosition;
+    int districtPosition;
+
+    int pinCode;
+    String address;
+
+    String specialDiseases;
+    int[] diseasesArray = {0, 0, 0, 0, 0, 0, 0};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        editModeScroll =findViewById(R.id.edit_mode_scroll);
-        viewScrollMode=findViewById(R.id.view_mode_scroll);
+        editModeScroll = findViewById(R.id.edit_mode_scroll);
+        viewScrollMode = findViewById(R.id.view_mode_scroll);
 
-        Intent intent=getIntent();
+        Intent intent = getIntent();
 
-        if(intent.getIntExtra(ProfileFragment.USER_DETAILS_MODE_KEY,-1)==0) {
+        getUserInformation();
+
+        if (intent.getIntExtra(ProfileFragment.USER_DETAILS_MODE_KEY, -1) == 0) {
             editModeScroll.setVisibility(View.VISIBLE);
             viewScrollMode.setVisibility(View.GONE);
             InitEditModeUIElements();
-        }
-        else if(intent.getIntExtra(ProfileFragment.USER_DETAILS_MODE_KEY,-1)==1){
+        } else if (intent.getIntExtra(ProfileFragment.USER_DETAILS_MODE_KEY, -1) == 1) {
             editModeScroll.setVisibility(View.GONE);
             viewScrollMode.setVisibility(View.VISIBLE);
+            InitViewModeUIElements();
         }
 
     }
 
-    public void InitEditModeUIElements(){
+    /**
+     * ==================================== METHOD FOR INITIALIZE EDIT MODE UI ELEMENTS ===============================
+     **/
+    public void InitEditModeUIElements() {
 
         nameField = findViewById(R.id.name_field);
         heightField = findViewById(R.id.height_field);
@@ -88,21 +127,21 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         pinCodeField = findViewById(R.id.pincode_edit_field);
         addressField = findViewById(R.id.full_address);
 
-        specialDiseases = new CheckBox[7];
-        specialDiseases[0] = findViewById(R.id.weak_eyesight_checkbox);
-        specialDiseases[1] = findViewById(R.id.diabetic_checkbox);
-        specialDiseases[2] = findViewById(R.id.respiratory_disease_checkbox);
-        specialDiseases[3] = findViewById(R.id.alzheimer_checkbox);
-        specialDiseases[4] = findViewById(R.id.heart_disease_checkbox);
-        specialDiseases[5] = findViewById(R.id.overweight_checkbox);
-        specialDiseases[6] = findViewById(R.id.handicapped_checkbox);
+        specialDiseaseCheckboxes = new CheckBox[7];
+        specialDiseaseCheckboxes[0] = findViewById(R.id.weak_eyesight_checkbox);
+        specialDiseaseCheckboxes[1] = findViewById(R.id.diabetic_checkbox);
+        specialDiseaseCheckboxes[2] = findViewById(R.id.respiratory_disease_checkbox);
+        specialDiseaseCheckboxes[3] = findViewById(R.id.alzheimer_checkbox);
+        specialDiseaseCheckboxes[4] = findViewById(R.id.heart_disease_checkbox);
+        specialDiseaseCheckboxes[5] = findViewById(R.id.overweight_checkbox);
+        specialDiseaseCheckboxes[6] = findViewById(R.id.handicapped_checkbox);
 
         saveButton = findViewById(R.id.save_button);
 
-        getUserInformation();
         saveButton.setOnClickListener(this);
 
     }
+
     /**
      * ========================================== METHODS FOR DOB SPINNERS =========================================
      **/
@@ -158,11 +197,11 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
     }
 
-    public void setSpecialDiseases(int[] diseases) {
+    public void setSpecialDiseaseCheckboxes(int[] diseases) {
 
         for (int i = 0; i < 7; i++)
             if (diseases[i] == 1)
-                specialDiseases[i].setChecked(true);
+                specialDiseaseCheckboxes[i].setChecked(true);
     }
 
     /**
@@ -252,13 +291,10 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             if (pinCodeField.getText().toString().equals("")) {
                 allClear = false;
                 pinCodeField.setError("Required");
-            }
-            else if(pinCodeField.getText().toString().length()<6)
-            {
-                allClear=false;
+            } else if (pinCodeField.getText().toString().length() < 6) {
+                allClear = false;
                 pinCodeField.setError("Invalid PinCode");
-            }
-            else
+            } else
                 pinCodeField.setError(null);
 
             if (addressField.getText().toString().equals("")) {
@@ -285,8 +321,8 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     public void saveUserInformation() {
 
         User.setName(this, nameField.getText().toString());
-        User.setHeight(this,Integer.parseInt(heightField.getText().toString()));
-        User.setWeight(this,Integer.parseInt(weightField.getText().toString()));
+        User.setHeight(this, Integer.parseInt(heightField.getText().toString()));
+        User.setWeight(this, Integer.parseInt(weightField.getText().toString()));
         User.setDOB(this, yearSpinner, monthSpinner, dateSpinner);
         User.setGender(this, maleRadio, femaleRadio, othersRadio);
 
@@ -298,7 +334,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         User.setPinCode(this, Integer.parseInt(pinCodeField.getText().toString()));
         User.setAddress(this, addressField.getText().toString());
 
-        User.setSpecialDiseases(this,specialDiseases);
+        User.setSpecialDiseases(this, specialDiseaseCheckboxes);
 
         User.setDoctor(this, false);
 
@@ -308,13 +344,13 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
     public void getUserInformation() {
         //personal details
-        String name = User.getName(this);
+        userName = User.getName(this);
 
         //date of birth
-        int year = 2021;
-        int month = 0;
-        int date = 0;
-        String DOB = User.getDOB(this);
+        year = 2021;
+        month = 0;
+        date = 0;
+        DOB = User.getDOB(this);
 
         if (!TextUtils.isEmpty(DOB)) {
             String[] format = DOB.split("-");
@@ -325,35 +361,34 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         }
 
         //height and weight
-        int height = User.getHeight(this);
-        int weight = User.getWeight(this);
+        height = User.getHeight(this);
+        weight = User.getWeight(this);
 
         //gender
-        String gender = User.getGender(this);
+        gender = User.getGender(this);
 
         //family details
-        String fatherName = User.getFatherName(this);
-        String motherName = User.getMotherName(this);
+        fatherName = User.getFatherName(this);
+        motherName = User.getMotherName(this);
 
 
         //state and district
-        int statePosition = User.getState(this);
-        int districtPosition = User.getDistrict(this);
+        statePosition = User.getState(this);
+        districtPosition = User.getDistrict(this);
 
         //pinCode and address
-        int pinCode = User.getPinCode(this);
-        String address = User.getAddress(this);
+        pinCode = User.getPinCode(this);
+        address = User.getAddress(this);
 
         //special diseases
-        String specialDiseases = User.getSpecialDiseases(this);
-        int[] diseasesArray = {0,0,0,0,0,0,0};
+        specialDiseases = User.getSpecialDiseases(this);
 
         for (int i = 0; i < 7; i++)
-            diseasesArray[i] = specialDiseases.charAt(i)-48;
+            diseasesArray[i] = specialDiseases.charAt(i) - 48;
 
 
         //setting information from shared preferences
-        nameField.setText(name);
+        nameField.setText(userName);
 
         if (height != 0)
             heightField.setText(height + "");
@@ -373,6 +408,26 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         addressField.setText(address);
 
-        setSpecialDiseases(diseasesArray);
+        setSpecialDiseaseCheckboxes(diseasesArray);
+    }
+
+    /**
+     * ==================================== METHOD FOR INITIALIZE EDIT MODE UI ELEMENTS ===============================
+     **/
+    public void InitViewModeUIElements() {
+
+        nameTextField = findViewById(R.id.name_text_field);
+        dobTextField = findViewById(R.id.dob_text_field);
+        heightTextField = findViewById(R.id.height_text_field);
+        weightTextField = findViewById(R.id.weight_text_field);
+        genderTextField = findViewById(R.id.gender_text_field);
+        fatherNameTextField = findViewById(R.id.father_name_text_field);
+        motherNameTextField = findViewById(R.id.mother_name_text_field);
+        stateTextField = findViewById(R.id.state_text_field);
+        districtTextField = findViewById(R.id.district_text_field);
+        pinCodeTextField = findViewById(R.id.pincode_text_field);
+        addressTextField = findViewById(R.id.address_text_field);
+
+
     }
 }
