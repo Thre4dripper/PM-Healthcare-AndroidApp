@@ -29,6 +29,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     MaterialButton editProfileButton, viewProfileButton;
 
 
+    public static final String USER_DETAILS_MODE_KEY="userDetailsModeKey";
+    public static final int MODE_EDIT=0;
+    public static final int MODE_VIEW=1;
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -83,7 +87,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         }
         else if(view==editProfileButton){
-            startActivity(new Intent(getActivity(), ProfileActivity.class));
+            Intent intent=new Intent(getActivity(),ProfileActivity.class);
+            intent.putExtra(USER_DETAILS_MODE_KEY,MODE_EDIT);
+            startActivity(intent);
+        }
+        else if(view==viewProfileButton){
+            Intent intent=new Intent(getActivity(),ProfileActivity.class);
+            intent.putExtra(USER_DETAILS_MODE_KEY,MODE_VIEW);
+            startActivity(intent);
         }
         else if(view==feedbackBtn){
 
