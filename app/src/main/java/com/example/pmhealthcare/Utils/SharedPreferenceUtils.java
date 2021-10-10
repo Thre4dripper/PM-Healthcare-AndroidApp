@@ -1,8 +1,11 @@
 package com.example.pmhealthcare.Utils;
 
 import android.content.Context;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+
+import java.util.Arrays;
 
 public class SharedPreferenceUtils {
 
@@ -23,5 +26,18 @@ public class SharedPreferenceUtils {
         else if(r3.isChecked())
             gender="Male";
         return gender;
+    }
+
+    public static String getDiseasesArrayString(Context context, CheckBox[] checkBoxes){
+        int[] diseaseArray={0,0,0,0,0,0,0};
+        StringBuilder diseases= new StringBuilder();
+
+        for(int i=0;i<7;i++){
+            if(checkBoxes[i].isChecked())
+                diseaseArray[i]=1;
+            diseases.append(diseaseArray[i]);
+        }
+
+            return diseases.toString();
     }
 }

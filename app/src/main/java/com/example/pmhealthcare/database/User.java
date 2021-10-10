@@ -2,6 +2,7 @@ package com.example.pmhealthcare.database;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
@@ -26,6 +27,54 @@ public class User {
 
         sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
         return sharedPreferences.getString("UserName","");
+    }
+
+
+    public static void setDOB(Context context, Spinner year, Spinner month, Spinner date) {
+        sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
+        editor=sharedPreferences.edit();
+
+        String DOB = SharedPreferenceUtils.getDateOfBirth(context,year,month,date);
+        editor.putString("DateOfBirth",DOB);
+        editor.apply();
+    }
+
+    public static String getDOB(Context context) {
+
+        sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
+        return sharedPreferences.getString("DateOfBirth","");
+
+    }
+
+    public static void setHeight(Context context,int height){
+        sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
+        editor=sharedPreferences.edit();
+
+        editor.putInt("UserHeight",height);
+        editor.apply();
+    }
+
+    public static int getHeight(Context context) {
+
+        sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
+        return sharedPreferences.getInt("UserHeight",0);
+
+    }
+
+
+    public static void setWeight(Context context,int weight){
+        sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
+        editor=sharedPreferences.edit();
+
+        editor.putInt("UserWeight",weight);
+        editor.apply();
+    }
+
+    public static int getWeight(Context context) {
+
+        sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
+        return sharedPreferences.getInt("UserWeight",0);
+
     }
 
 
@@ -56,23 +105,6 @@ public class User {
 
         sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
         return sharedPreferences.getString("UserMotherName","");
-    }
-
-
-    public static void setDOB(Context context, Spinner year, Spinner month, Spinner date) {
-        sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
-        editor=sharedPreferences.edit();
-
-        String DOB = SharedPreferenceUtils.getDateOfBirth(context,year,month,date);
-        editor.putString("DateOfBirth",DOB);
-        editor.apply();
-    }
-
-    public static String getDOB(Context context) {
-
-        sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
-        return sharedPreferences.getString("DateOfBirth","");
-
     }
 
 
@@ -158,5 +190,21 @@ public class User {
     public static boolean getDoctor(Context context){
         sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
         return sharedPreferences.getBoolean("IsDoctor",false);
+    }
+
+    public static void setSpecialDiseases(Context context, CheckBox[] checkBoxes){
+
+        sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
+        editor=sharedPreferences.edit();
+
+        String diseaseArrayString=SharedPreferenceUtils.getDiseasesArrayString(context,checkBoxes);
+
+        editor.putString("SpecialDiseases",diseaseArrayString);
+        editor.apply();
+    }
+
+    public static String getSpecialDiseases(Context context){
+        sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
+        return sharedPreferences.getString("SpecialDiseases","0000000");
     }
 }
