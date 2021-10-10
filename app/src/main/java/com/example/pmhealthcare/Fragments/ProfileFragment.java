@@ -16,6 +16,7 @@ import com.example.pmhealthcare.Activities.ProfileActivity;
 import com.example.pmhealthcare.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
@@ -56,9 +57,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if(view==signOutBtn){
-            AuthUI.getInstance().signOut(getActivity());
-            Toast.makeText(getActivity(), "Signed Out", Toast.LENGTH_SHORT).show();
-            getActivity().finish();
+
+            new MaterialAlertDialogBuilder(getActivity())
+                    .setTitle("Save")
+                    .setMessage("Do you want to Sign Out")
+                    .setPositiveButton("yes", (dialogInterface, i) -> {
+                        AuthUI.getInstance().signOut(getActivity());
+                        Toast.makeText(getActivity(), "Signed Out", Toast.LENGTH_SHORT).show();
+                        getActivity().finish();
+                    })
+                    .setNegativeButton("No", (dialogInterface, i) -> {
+                        dialogInterface.dismiss();
+                    })
+                    .show();
+
         }
         else if(view==editProfileButton){
             startActivity(new Intent(getActivity(), ProfileActivity.class));

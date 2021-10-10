@@ -251,7 +251,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                         .setMessage("Do you want to Save current information")
                         .setPositiveButton("Yes", (dialogInterface, i) -> {
                             saveUserInformation();
-
+                            finish();
                         })
                         .setNegativeButton("No", (dialogInterface, i) -> {
                             dialogInterface.dismiss();
