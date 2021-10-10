@@ -78,26 +78,28 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="8dp">
+                android:orientation="horizontal">
 
                 <Spinner
                     android:id="@+id/year_spinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"/>
 
                 <Spinner
                     android:id="@+id/month_spinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"/>
 
                 <Spinner
                     android:id="@+id/date_spinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_margin="8dp"
+                    android:layout_weight="1" />
 
             </LinearLayout>
 
@@ -116,13 +118,14 @@
                     android:layout_marginEnd="8dp"
                     android:hint="Height"
                     app:endIconMode="clear_text"
-                    app:suffixText="kg"
+                    app:suffixText="cm"
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/height"
+                        android:id="@+id/height_field"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:inputType="number"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -135,13 +138,14 @@
                     android:layout_marginEnd="16dp"
                     android:hint="Weight"
                     app:endIconMode="clear_text"
-                    app:suffixText="cm"
+                    app:suffixText="kg"
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/weight"
+                        android:id="@+id/weight_field"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:inputType="number"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -327,36 +331,43 @@
                     android:layout_weight="1">
 
                     <CheckBox
+                        android:id="@+id/weak_eyesight_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Weak Eyesight"/>
 
                     <CheckBox
+                        android:id="@+id/diabetic_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Diabetic"/>
 
                     <CheckBox
+                        android:id="@+id/respiratory_disease_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Respiratory Disease"/>
 
                     <CheckBox
+                        android:id="@+id/alzheimer_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Alzheimer"/>
 
                     <CheckBox
+                        android:id="@+id/heart_disease_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Heart disease"/>
+                        android:text="Heart Disease"/>
 
                     <CheckBox
+                        android:id="@+id/overweight_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Overweight"/>
 
                     <CheckBox
+                        android:id="@+id/handicapped_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Handicapped"/>
