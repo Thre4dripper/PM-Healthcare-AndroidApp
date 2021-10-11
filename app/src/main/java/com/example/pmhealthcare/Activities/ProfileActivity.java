@@ -25,6 +25,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class ProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
+    private static final String TAG = "Profile Activity";
     ScrollView editModeScroll, viewScrollMode;
 
     //For Edit Mode
@@ -446,26 +447,72 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         pinCodeTextField = findViewById(R.id.pincode_text_field);
         addressTextField = findViewById(R.id.address_text_field);
 
+        specialDiseasesTextFields=new TextView[8];
+        specialDiseasesTextFields[0]=findViewById(R.id.no_special_disease_text_view);
+        specialDiseasesTextFields[1]=findViewById(R.id.weak_eyesight_text_field);
+        specialDiseasesTextFields[2]=findViewById(R.id.diabetic_text_field);
+        specialDiseasesTextFields[3]=findViewById(R.id.respiratory_text_field);
+        specialDiseasesTextFields[4]=findViewById(R.id.alzheimer_text_field);
+        specialDiseasesTextFields[5]=findViewById(R.id.heart_text_field);
+        specialDiseasesTextFields[6]=findViewById(R.id.overweight_text_field);
+        specialDiseasesTextFields[7]=findViewById(R.id.handicapped_text_field);
+
+
     }
 
     public void setViewModeUserInformation(){
-        nameTextField.setText(userName);
-        heightTextField.setText(height+" cm");
-        weightTextField.setText(weight+" kg");
 
-        dobTextField.setText(this.date+"-"+(this.month+1)+"-"+this.year);
-        genderTextField.setText(gender);
+        if(!userName.equals("")) {
+            nameTextField.setText(userName);
+            heightTextField.setText(height + " cm");
+            weightTextField.setText(weight + " kg");
 
-        fatherNameTextField.setText(fatherName);
-        motherNameTextField.setText(motherName);
+            dobTextField.setText(this.date + "-" + (this.month + 1) + "-" + this.year);
+            genderTextField.setText(gender);
 
-        stateTextField.setText(statesArray[statePosition]);
-        districtTextField.setText(districtsArray[districtPosition]);
+            fatherNameTextField.setText(fatherName);
+            motherNameTextField.setText(motherName);
 
+            stateTextField.setText(statesArray[statePosition]);
+            districtTextField.setText(districtsArray[districtPosition]);
 
+            pinCodeTextField.setText(pinCode + "");
+            addressTextField.setText(address);
 
-        pinCodeTextField.setText(pinCode+"");
-        addressTextField.setText(address);
+            boolean hasSpecialDisease=false;
+            for(int i=0;i<7;i++){
+                if(diseasesArray[i]==1)
+                {
+                    specialDiseasesTextFields[i+1].setVisibility(View.VISIBLE);
+                    hasSpecialDisease=true;
+                }
+                else
+                    specialDiseasesTextFields[i+1].setVisibility(View.GONE);
+            }
+            if(hasSpecialDisease)specialDiseasesTextFields[0].setVisibility(View.GONE);
+            else specialDiseasesTextFields[0].setVisibility(View.VISIBLE);
 
+        }
+        else {
+
+            nameTextField.setText("------");
+            heightTextField.setText("------");
+            weightTextField.setText("------");
+
+            dobTextField.setText("------");
+            genderTextField.setText("------");
+
+            fatherNameTextField.setText("------");
+            motherNameTextField.setText("------");
+
+            stateTextField.setText("------");
+            districtTextField.setText("------");
+
+            pinCodeTextField.setText("------");
+            addressTextField.setText("------");
+
+            specialDiseasesTextFields[0].setText("------");
+
+        }
     }
 }
