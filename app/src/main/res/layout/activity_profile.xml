@@ -610,8 +610,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -648,8 +648,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -682,8 +682,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -715,8 +715,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -747,8 +747,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -783,7 +783,65 @@
                 android:layout_height="wrap_content"
                 android:text="Special Diseases -" />
 
+            <LinearLayout
+                android:id="@+id/special_diseases_view_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/no_special_disease_text_view"
+                    style="@style/ProfileViewModeDetailsTextFields"
+                    android:text="None"
+                    />
+
+                <TextView
+                    android:id="@+id/weak_eyesight_text_field"
+                    style="@style/ProfileViewModeDetailsTextFields"
+                    android:text="Weak Eyesight"
+                    android:visibility="gone"
+                    />
+
+                <TextView
+                    android:id="@+id/diabetic_text_field"
+                    style="@style/ProfileViewModeDetailsTextFields"
+                    android:text="Diabetic"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/respiratory_text_field"
+                    style="@style/ProfileViewModeDetailsTextFields"
+                    android:text="Respiratory Disease"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/alzheimer_text_field"
+                    style="@style/ProfileViewModeDetailsTextFields"
+                    android:text="Alzheimer"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/heart_text_field"
+                    style="@style/ProfileViewModeDetailsTextFields"
+                    android:text="Heart Disease"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/overweight_text_field"
+                    style="@style/ProfileViewModeDetailsTextFields"
+                    android:text="Overweight"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/handicapped_text_field"
+                    style="@style/ProfileViewModeDetailsTextFields"
+                    android:text="Handicapped"
+                    android:visibility="gone"/>
+
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
