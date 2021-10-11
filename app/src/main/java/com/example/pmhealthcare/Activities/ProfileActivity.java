@@ -41,8 +41,8 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     String[] months = {"JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"};
     String[] dates;
 
-    int dateSelection = 0, districtSelection = 0;
-
+    String[] statesArray;
+    String[] districtsArray;
 
     //For View Mode
     TextView nameTextField, dobTextField, heightTextField, weightTextField, genderTextField;
@@ -51,28 +51,36 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     TextView[] specialDiseasesTextFields;
 
 
-    //For both Modes
+    /* For both Modes */
+    //name
     String userName;
 
+    //date of birth
     int year = 2021;
     int month = 0;
     int date = 0;
     String DOB;
 
+    //height and weight
     int height;
     int weight;
 
+    //gender
     String gender;
 
+    //father and mother name
     String fatherName;
     String motherName;
 
-    int statePosition;
-    int districtPosition;
+    //state and district name
+    int statePosition=0;
+    int districtPosition=0;
 
+    //pin code and address
     int pinCode;
     String address;
 
+    //special diseases
     String specialDiseases;
     int[] diseasesArray = {0, 0, 0, 0, 0, 0, 0};
 
@@ -91,11 +99,16 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         if (intent.getIntExtra(ProfileFragment.USER_DETAILS_MODE_KEY, -1) == 0) {
             editModeScroll.setVisibility(View.VISIBLE);
             viewScrollMode.setVisibility(View.GONE);
+
             InitEditModeUIElements();
-        } else if (intent.getIntExtra(ProfileFragment.USER_DETAILS_MODE_KEY, -1) == 1) {
+            setEditModeUserInformation();
+        }
+        else if (intent.getIntExtra(ProfileFragment.USER_DETAILS_MODE_KEY, -1) == 1) {
             editModeScroll.setVisibility(View.GONE);
             viewScrollMode.setVisibility(View.VISIBLE);
+
             InitViewModeUIElements();
+            setViewModeUserInformation();
         }
 
     }
@@ -123,6 +136,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         stateSpinner = findViewById(R.id.state_spinner);
         districtSpinner = findViewById(R.id.district_spinner);
+
 
         pinCodeField = findViewById(R.id.pincode_edit_field);
         addressField = findViewById(R.id.full_address);
@@ -162,7 +176,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         monthSpinner.setOnItemSelectedListener(this);
         dateSpinner.setOnItemSelectedListener(this);
 
-        dateSelection = date - 1;
+        this.date = date - 1;
     }
 
     public void setGenderRadios(String gender) {
@@ -185,15 +199,14 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
      * ==================================== METHODS FOR STATE AND DISTRICTS SPINNERS ================================
      **/
     public void setStateSpinner(int state, int district) {
-        String[] states = JsonParser.getStatesFromJSON(this);
 
-        ArrayAdapter<String> statesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, states);
+        ArrayAdapter<String> statesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, statesArray);
         stateSpinner.setAdapter(statesAdapter);
 
         stateSpinner.setOnItemSelectedListener(this);
         stateSpinner.setSelection(state);
 
-        districtSelection = district;
+        this.districtPosition = district;
 
     }
 
@@ -246,14 +259,13 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
             ArrayAdapter<String> datesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, dates);
             dateSpinner.setAdapter(datesAdapter);
-            dateSpinner.setSelection(dateSelection);
+            dateSpinner.setSelection(this.date);
 
         } else if (parent == stateSpinner) {
-            String[] districts = JsonParser.getDistrictsFromJSON(this, stateSpinner.getSelectedItem().toString().trim());
 
-            ArrayAdapter<String> districtAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, districts);
+            ArrayAdapter<String> districtAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, districtsArray);
             districtSpinner.setAdapter(districtAdapter);
-            districtSpinner.setSelection(districtSelection);
+            districtSpinner.setSelection(this.districtPosition);
         }
     }
 
@@ -352,6 +364,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         date = 0;
         DOB = User.getDOB(this);
 
+        //converting date into readable format
         if (!TextUtils.isEmpty(DOB)) {
             String[] format = DOB.split("-");
 
@@ -374,7 +387,10 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         //state and district
         statePosition = User.getState(this);
+        statesArray = JsonParser.getStatesFromJSON(this);
+
         districtPosition = User.getDistrict(this);
+        districtsArray = JsonParser.getDistrictsFromJSON(this, statesArray[statePosition]);
 
         //pinCode and address
         pinCode = User.getPinCode(this);
@@ -383,11 +399,13 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         //special diseases
         specialDiseases = User.getSpecialDiseases(this);
 
+        //breaking array to into readable format
         for (int i = 0; i < 7; i++)
             diseasesArray[i] = specialDiseases.charAt(i) - 48;
+    }
 
-
-        //setting information from shared preferences
+    /**=================================== METHOD FOR SETTING USER INFO IN EDIT MODE UI =====================================**/
+    public void setEditModeUserInformation(){
         nameField.setText(userName);
 
         if (height != 0)
@@ -428,6 +446,26 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         pinCodeTextField = findViewById(R.id.pincode_text_field);
         addressTextField = findViewById(R.id.address_text_field);
 
+    }
+
+    public void setViewModeUserInformation(){
+        nameTextField.setText(userName);
+        heightTextField.setText(height+" cm");
+        weightTextField.setText(weight+" kg");
+
+        dobTextField.setText(this.date+"-"+(this.month+1)+"-"+this.year);
+        genderTextField.setText(gender);
+
+        fatherNameTextField.setText(fatherName);
+        motherNameTextField.setText(motherName);
+
+        stateTextField.setText(statesArray[statePosition]);
+        districtTextField.setText(districtsArray[districtPosition]);
+
+
+
+        pinCodeTextField.setText(pinCode+"");
+        addressTextField.setText(address);
 
     }
 }
