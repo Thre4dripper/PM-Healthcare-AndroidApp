@@ -1,6 +1,7 @@
 package com.example.pmhealthcare.Networking;
 
 import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 import android.content.Context;
 import android.content.Intent;
@@ -38,9 +39,8 @@ public class Firebase {
     /**=============================== METHOD FOR HANDLING FIREBASE AUTH RESULT =====================================**/
     public static boolean FireBaseAUTHUIRESULT(Context context,int resultCode, int requestCode){
 
-        if (resultCode == RESULT_CANCELED && requestCode == FIREBASE_REQUEST_CODE) {
-           return false;
-        } else {
+        if (resultCode == RESULT_OK && requestCode==FIREBASE_REQUEST_CODE) {
+
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             System.out.println(user.getUid());
             if (user.getMetadata().getCreationTimestamp() == user.getMetadata().getLastSignInTimestamp())
@@ -48,8 +48,8 @@ public class Firebase {
             else
                 Toast.makeText(context, "Welcome Back", Toast.LENGTH_SHORT).show();
 
-            return true;
-        }
-
+           return true;
+        } else
+            return resultCode != RESULT_CANCELED || requestCode != FIREBASE_REQUEST_CODE;
     }
 }
