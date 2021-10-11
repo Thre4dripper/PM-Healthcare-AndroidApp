@@ -377,14 +377,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                </LinearLayout>
-
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
@@ -404,6 +396,7 @@
         android:id="@+id/view_mode_scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -414,9 +407,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
+            <TextView
+                style="@style/ProfileViewModeHeaderTextFields"
+                android:text="Personal Details :-" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:baselineAligned="false"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -426,30 +425,31 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/ProfileViewModeHeaderTextFields"
-                        android:text="Personal Details :-" />
+                        style="@style/ProfileViewModeLabelsTextFields"
+                        android:text="Name :-" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/name_text_field"
                         style="@style/ProfileViewModeDetailsTextFields"
                         android:text="Name -" />
 
-                    <TextView
-                        style="@style/ProfileViewModeDetailsTextFields"
-                        android:text="Date of Birth -" />
-
-                    <TextView
-                        style="@style/ProfileViewModeDetailsTextFields"
-                        android:text="Height -" />
-
-                    <TextView
-                        style="@style/ProfileViewModeDetailsTextFields"
-                        android:text="Weight -" />
-
-                    <TextView
-                        style="@style/ProfileViewModeDetailsTextFields"
-                        android:text="Gender -" />
 
                 </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -458,28 +458,111 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/ProfileViewModeHeaderTextFields"
-                        android:text="" />
+                        style="@style/ProfileViewModeLabelsTextFields"
+                        android:text="Date of Birth :-" />
 
-                    <TextView
-                        android:id="@+id/name_text_field"
-                        style="@style/ProfileViewModeDetailsTextFields"
-                        android:text="Name -" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/dob_text_field"
                         style="@style/ProfileViewModeDetailsTextFields"
                         android:text="Date of Birth -" />
 
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/ProfileViewModeLabelsTextFields"
+                        android:text="Height :-" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/height_text_field"
                         style="@style/ProfileViewModeDetailsTextFields"
                         android:text="Height -" />
 
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/ProfileViewModeLabelsTextFields"
+                        android:text="Weight :-" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/weight_text_field"
                         style="@style/ProfileViewModeDetailsTextFields"
                         android:text="Weight -" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/ProfileViewModeLabelsTextFields"
+                        android:text="Gender :-" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/gender_text_field"
@@ -487,12 +570,16 @@
                         android:text="Gender -" />
 
                 </LinearLayout>
-
             </LinearLayout>
+
+            <TextView
+                style="@style/ProfileViewModeHeaderTextFields"
+                android:text="Family Details :-" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:baselineAligned="false"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -502,18 +589,29 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/ProfileViewModeHeaderTextFields"
-                        android:text="Family Details :-" />
-
-                    <TextView
-                        style="@style/ProfileViewModeDetailsTextFields"
-                        android:text="Father's Name -" />
-
-                    <TextView
-                        style="@style/ProfileViewModeDetailsTextFields"
-                        android:text="Mother's Name -" />
+                        style="@style/ProfileViewModeLabelsTextFields"
+                        android:text="Father's Name :-" />
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/father_name_text_field"
+                        style="@style/ProfileViewModeDetailsTextFields"
+                        android:text="Father's Name -" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -522,13 +620,16 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/ProfileViewModeHeaderTextFields"
-                        android:text="" />
+                        style="@style/ProfileViewModeLabelsTextFields"
+                        android:text="Mother's Name :-" />
 
-                    <TextView
-                        android:id="@+id/father_name_text_field"
-                        style="@style/ProfileViewModeDetailsTextFields"
-                        android:text="Father's Name -" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/mother_name_text_field"
@@ -539,10 +640,16 @@
 
             </LinearLayout>
 
+            <TextView
+                style="@style/ProfileViewModeHeaderTextFields"
+                android:text="Location Details :-" />
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -551,51 +658,115 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/ProfileViewModeHeaderTextFields"
-                        android:text="Location Details :-" />
-
-                    <TextView
-                        style="@style/ProfileViewModeDetailsTextFields"
-                        android:text="State -" />
-
-                    <TextView
-                        style="@style/ProfileViewModeDetailsTextFields"
-                        android:text="District -" />
-
-                    <TextView
-                        style="@style/ProfileViewModeDetailsTextFields"
-                        android:text="PinCode -" />
-
-                    <TextView
-                        style="@style/ProfileViewModeDetailsTextFields"
-                        android:text="Address -" />
+                        style="@style/ProfileViewModeLabelsTextFields"
+                        android:text="State :-" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.2"
                     android:orientation="vertical">
-
-                    <TextView
-                        style="@style/ProfileViewModeHeaderTextFields"
-                        android:text="" />
 
                     <TextView
                         android:id="@+id/state_text_field"
                         style="@style/ProfileViewModeDetailsTextFields"
                         android:text="State -" />
 
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/ProfileViewModeLabelsTextFields"
+                        android:text="District :-" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/district_text_field"
                         style="@style/ProfileViewModeDetailsTextFields"
                         android:text="District -" />
 
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/ProfileViewModeLabelsTextFields"
+                        android:text="PinCode :-" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/pincode_text_field"
                         style="@style/ProfileViewModeDetailsTextFields"
                         android:text="PinCode -" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/ProfileViewModeLabelsTextFields"
+                        android:text="Address :-" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/address_text_field"
