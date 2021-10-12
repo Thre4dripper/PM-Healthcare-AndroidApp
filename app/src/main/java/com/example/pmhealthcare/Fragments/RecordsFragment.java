@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.pmhealthcare.Activities.TouchImageActivity;
 import com.example.pmhealthcare.Adapters.RecordsRecyclerAdapter;
 import com.example.pmhealthcare.R;
 import com.github.dhaval2404.imagepicker.ImagePicker;
@@ -20,7 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecordsFragment extends Fragment implements View.OnClickListener {
+public class RecordsFragment extends Fragment implements View.OnClickListener, RecordsRecyclerAdapter.RecordsItemOnClickInterface {
 
 
     FloatingActionButton floatingActionButton;
@@ -49,7 +51,7 @@ public class RecordsFragment extends Fragment implements View.OnClickListener {
     public void InitUIElements(){
         floatingActionButton.setOnClickListener(this);
 
-        recyclerAdapter=new RecordsRecyclerAdapter(getContext(),imageUriList);
+        recyclerAdapter=new RecordsRecyclerAdapter(getContext(),imageUriList,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recyclerAdapter);
     }
@@ -61,7 +63,7 @@ public class RecordsFragment extends Fragment implements View.OnClickListener {
         if(v==floatingActionButton){
             ImagePicker.with(this)
                    // .crop()	    			//Crop image(Optional), Check Customization for more option
-                    .compress(256)			//Final image size will be less than 1 MB(Optional)
+                    .compress(1024)			//Final image size will be less than 1 MB(Optional)
                     //.maxResultSize(720, 720)	//Final image resolution will be less than 1080 x 1080(Optional)
                     .start(150);
         }
@@ -75,5 +77,12 @@ public class RecordsFragment extends Fragment implements View.OnClickListener {
            imageUriList.add(data.getData());
             recyclerAdapter.notifyItemInserted(imageUriList.size()-1);
         }
+    }
+
+    @Override
+    public void onCLick(int position, Uri imageUri) {
+        Intent intent=new Intent(getContext(), TouchImageActivity.class);
+        intent.putExtra("imageUri",imageUri);
+        startActivity(intent);
     }
 }
