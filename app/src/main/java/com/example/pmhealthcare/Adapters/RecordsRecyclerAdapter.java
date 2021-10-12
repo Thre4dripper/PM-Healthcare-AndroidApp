@@ -16,11 +16,22 @@ import java.util.List;
 public class RecordsRecyclerAdapter extends RecyclerView.Adapter<RecordsRecyclerAdapter.ViewHolder> {
 
     Context mContext;
-    List<Uri> list;
-    public RecordsRecyclerAdapter(Context context,List<Uri> list){
-        mContext=context;
-        this.list=list;
+    public static List<Uri> list;
+
+
+    public static interface RecordsItemOnClickInterface{
+        void onCLick(int position,Uri imageUri);
     }
+
+    public static RecordsItemOnClickInterface recordsItemOnClickInterface;
+
+    public RecordsRecyclerAdapter(Context context,List<Uri> list,RecordsItemOnClickInterface onClickInterface){
+        mContext=context;
+        RecordsRecyclerAdapter.list=list;
+
+        recordsItemOnClickInterface=onClickInterface;
+    }
+
 
     @NonNull
     @Override
@@ -47,6 +58,13 @@ public class RecordsRecyclerAdapter extends RecyclerView.Adapter<RecordsRecycler
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             recordsView=itemView.findViewById(R.id.record_image_view);
+
+            recordsView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    recordsItemOnClickInterface.onCLick(getAdapterPosition(),list.get(getAdapterPosition()));
+                }
+            });
         }
     }
 }
