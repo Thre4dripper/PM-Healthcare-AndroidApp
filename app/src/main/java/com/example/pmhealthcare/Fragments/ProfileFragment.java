@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pmhealthcare.Activities.ProfileActivity;
+import com.example.pmhealthcare.Networking.Firebase;
 import com.example.pmhealthcare.R;
 import com.example.pmhealthcare.database.User;
 import com.firebase.ui.auth.AuthUI;
@@ -81,6 +82,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        //sign out button onclick
         if(view==signOutBtn){
 
             new MaterialAlertDialogBuilder(getActivity())
@@ -97,16 +99,24 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     .show();
 
         }
+
+        //edit profile button on click
         else if(view==editProfileButton){
             Intent intent=new Intent(getActivity(),ProfileActivity.class);
             intent.putExtra(USER_DETAILS_MODE_KEY,MODE_EDIT);
             startActivity(intent);
+
+            Firebase.FirebaseFirestorePull(getContext());
         }
+
+        //View Profile Button On click
         else if(view==viewProfileButton){
             Intent intent=new Intent(getActivity(),ProfileActivity.class);
             intent.putExtra(USER_DETAILS_MODE_KEY,MODE_VIEW);
             startActivity(intent);
         }
+
+        //Feedback Button On click
         else if(view==feedbackBtn){
 
             Intent intent = new Intent(Intent.ACTION_SENDTO);
@@ -116,6 +126,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
                 startActivity(intent);
         }
+
+        //User DP On Click
         else if(view==userDp){
             ImagePicker.with(this)
                     .cropSquare()	    			//Crop image(Optional), Check Customization for more option
@@ -128,6 +140,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 /**================================= METHOD FOR SETTING USER DP ===============================================**/
     public void setUserDp() {
         Uri imageUri=User.getUserDp(getContext());
+        if(!imageUri.toString().equals(""))
         userDp.setImageURI(imageUri);
     }
 

@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.ammarptn.debug.gdrive.lib.GDriveDebugViewActivity;
 import com.example.pmhealthcare.Activities.TouchImageActivity;
 import com.example.pmhealthcare.Adapters.RecordsRecyclerAdapter;
 import com.example.pmhealthcare.R;
@@ -52,6 +50,7 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
         InitUIElements();
         return view;
     }
+
     public void InitUIElements(){
         floatingActionButton.setOnClickListener(this);
 
