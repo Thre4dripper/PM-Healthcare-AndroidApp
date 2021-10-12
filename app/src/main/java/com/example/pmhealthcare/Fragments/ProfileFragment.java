@@ -1,9 +1,12 @@
 package com.example.pmhealthcare.Fragments;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -17,8 +20,11 @@ import com.example.pmhealthcare.Activities.ProfileActivity;
 import com.example.pmhealthcare.R;
 import com.example.pmhealthcare.database.User;
 import com.firebase.ui.auth.AuthUI;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
@@ -27,6 +33,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     TextView userNameTextView;
     CardView signOutBtn,feedbackBtn;
     MaterialButton editProfileButton, viewProfileButton;
+    CircleImageView userDp;
 
 
     public static final String USER_DETAILS_MODE_KEY="userDetailsModeKey";
@@ -49,6 +56,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         viewProfileButton =view.findViewById(R.id.view_profile_button);
         signOutBtn=view.findViewById(R.id.sign_out_button);
         feedbackBtn=view.findViewById(R.id.feedback_button);
+        userDp=view.findViewById(R.id.user_profile_pic);
 
 
         InitUIElements();
@@ -61,11 +69,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         editProfileButton.setOnClickListener(this);
         viewProfileButton.setOnClickListener(this);
         feedbackBtn.setOnClickListener(this);
+        userDp.setOnClickListener(this);
 
         String userName=User.getName(getContext());
         if(userName.equals(""))
             userNameTextView.setText("User Name");
         else userNameTextView.setText(userName);
+
+        setUserDp();
     }
 
     @Override
@@ -104,6 +115,30 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
 
                 startActivity(intent);
+        }
+        else if(view==userDp){
+            ImagePicker.with(this)
+                    .cropSquare()	    			//Crop image(Optional), Check Customization for more option
+                    .compress(200)			//Final image size will be less than 1 MB(Optional)
+                    //.maxResultSize(720, 720)	//Final image resolution will be less than 1080 x 1080(Optional)
+                    .start(150);
+        }
+    }
+
+/**================================= METHOD FOR SETTING USER DP ===============================================**/
+    public void setUserDp() {
+        Uri imageUri=User.getUserDp(getContext());
+        userDp.setImageURI(imageUri);
+    }
+
+    /**================================================ ON ACTIVITY RESULT ====================================**/
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode==RESULT_OK  && requestCode==150){
+            userDp.setImageURI(data.getData());
+            User.setUserDp(getContext(),data.getData().toString());
         }
     }
 }

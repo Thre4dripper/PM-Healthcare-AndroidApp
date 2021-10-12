@@ -2,6 +2,7 @@ package com.example.pmhealthcare.database;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -206,5 +207,19 @@ public class User {
     public static String getSpecialDiseases(Context context){
         sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
         return sharedPreferences.getString("SpecialDiseases","0000000");
+    }
+
+    public static void setUserDp(Context context, String imageUri){
+        sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
+        editor=sharedPreferences.edit();
+
+        editor.putString("UserProfilePic",imageUri);
+        editor.apply();
+    }
+
+    public static Uri getUserDp(Context context){
+        sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
+
+        return Uri.parse(sharedPreferences.getString("UserProfilePic",""));
     }
 }
