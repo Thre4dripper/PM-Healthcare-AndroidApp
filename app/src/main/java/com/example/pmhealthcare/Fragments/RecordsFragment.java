@@ -2,6 +2,8 @@ package com.example.pmhealthcare.Fragments;
 
 
 import static android.app.Activity.RESULT_OK;
+
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ammarptn.debug.gdrive.lib.GDriveDebugViewActivity;
 import com.example.pmhealthcare.Activities.TouchImageActivity;
 import com.example.pmhealthcare.Adapters.RecordsRecyclerAdapter;
 import com.example.pmhealthcare.R;
@@ -30,7 +33,7 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
     RecordsRecyclerAdapter recyclerAdapter;
 
     List<Uri> imageUriList=new ArrayList<>();
-
+    ProgressDialog progressDialog;
     public RecordsFragment() {
         // Required empty public constructor
     }
@@ -44,6 +47,7 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
 
         floatingActionButton=view.findViewById(R.id.floatingActionButton);
         recyclerView=view.findViewById(R.id.records_recycler_view);
+        progressDialog=new ProgressDialog(getContext());
 
         InitUIElements();
         return view;
@@ -62,10 +66,13 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
 
         if(v==floatingActionButton){
             ImagePicker.with(this)
+                    .galleryOnly()
                    // .crop()	    			//Crop image(Optional), Check Customization for more option
-                    .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                    .compress(512)			//Final image size will be less than 1 MB(Optional)
                     //.maxResultSize(720, 720)	//Final image resolution will be less than 1080 x 1080(Optional)
                     .start(150);
+            progressDialog.setTitle("Importing image");
+            progressDialog.show();
         }
     }
 
@@ -76,7 +83,9 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
         if(resultCode==RESULT_OK  && requestCode==150){
            imageUriList.add(data.getData());
             recyclerAdapter.notifyItemInserted(imageUriList.size()-1);
+
         }
+        progressDialog.dismiss();
     }
 
     @Override

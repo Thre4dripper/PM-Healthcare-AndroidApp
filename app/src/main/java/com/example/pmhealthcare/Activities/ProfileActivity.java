@@ -1,6 +1,7 @@
 package com.example.pmhealthcare.Activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -23,10 +24,13 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private static final String TAG = "Profile Activity";
     ScrollView editModeScroll, viewScrollMode;
+    CircleImageView userDp;
 
     //For Edit Mode
     TextInputEditText nameField, heightField, weightField, fatherNameField, motherNameField, pinCodeField, addressField;
@@ -92,6 +96,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         editModeScroll = findViewById(R.id.edit_mode_scroll);
         viewScrollMode = findViewById(R.id.view_mode_scroll);
+        userDp=findViewById(R.id.user_profile_section_dp);
 
         Intent intent = getIntent();
 
@@ -356,6 +361,11 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     }
 
     public void getUserInformation() {
+
+        //Profile Pic
+        Uri imageUri=User.getUserDp(this);
+        userDp.setImageURI(imageUri);
+
         //personal details
         userName = User.getName(this);
 
