@@ -1,9 +1,11 @@
 package com.example.pmhealthcare.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,19 +16,33 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.AsyncTaskLoader;
+import androidx.loader.content.Loader;
 
 import com.example.pmhealthcare.Fragments.ProfileFragment;
+import com.example.pmhealthcare.Networking.Firebase;
 import com.example.pmhealthcare.R;
+import com.example.pmhealthcare.Utils.FirebaseFirestoreUtils;
 import com.example.pmhealthcare.Utils.JsonParser;
 import com.example.pmhealthcare.database.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class ProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener{
 
     private static final String TAG = "Profile Activity";
     ScrollView editModeScroll, viewScrollMode;
@@ -49,6 +65,8 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     String[] statesArray;
     String[] districtsArray;
 
+    public static Map<String,Object> resultMap;
+
     //For View Mode
     TextView nameTextField, dobTextField, heightTextField, weightTextField, genderTextField;
     TextView fatherNameTextField, motherNameTextField;
@@ -67,8 +85,8 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     String DOB;
 
     //height and weight
-    int height;
-    int weight;
+    long height;
+    long weight;
 
     //gender
     String gender;
@@ -78,11 +96,11 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     String motherName;
 
     //state and district name
-    int statePosition=0;
-    int districtPosition=0;
+    long statePosition=0;
+    long districtPosition=0;
 
     //pin code and address
-    int pinCode;
+    long pinCode;
     String address;
 
     //special diseases
@@ -100,14 +118,15 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         Intent intent = getIntent();
 
-        getUserInformation();
+        //getUserInformation();
 
         if (intent.getIntExtra(ProfileFragment.USER_DETAILS_MODE_KEY, -1) == 0) {
             editModeScroll.setVisibility(View.VISIBLE);
             viewScrollMode.setVisibility(View.GONE);
 
             InitEditModeUIElements();
-            setEditModeUserInformation();
+            FirestoreGetEditModeDetails();
+
         }
         else if (intent.getIntExtra(ProfileFragment.USER_DETAILS_MODE_KEY, -1) == 1) {
             editModeScroll.setVisibility(View.GONE);
@@ -182,11 +201,12 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         monthSpinner.setOnItemSelectedListener(this);
         dateSpinner.setOnItemSelectedListener(this);
 
-        this.date = date - 1;
+        this.date = date;
     }
 
     public void setGenderRadios(String gender) {
 
+        if(gender!=null)
         switch (gender) {
             case "Male":
                 maleRadio.setChecked(true);
@@ -204,13 +224,13 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     /**
      * ==================================== METHODS FOR STATE AND DISTRICTS SPINNERS ================================
      **/
-    public void setStateSpinner(int state, int district) {
+    public void setStateSpinner(long state, long district) {
 
         ArrayAdapter<String> statesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, statesArray);
         stateSpinner.setAdapter(statesAdapter);
 
         stateSpinner.setOnItemSelectedListener(this);
-        stateSpinner.setSelection(state);
+        stateSpinner.setSelection((int) state);
 
         this.districtPosition = district;
 
@@ -268,10 +288,11 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             dateSpinner.setSelection(this.date);
 
         } else if (parent == stateSpinner) {
+            districtsArray = JsonParser.getDistrictsFromJSON(this, stateSpinner.getSelectedItem().toString());
 
             ArrayAdapter<String> districtAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, districtsArray);
             districtSpinner.setAdapter(districtAdapter);
-            districtSpinner.setSelection(this.districtPosition);
+            districtSpinner.setSelection((int) this.districtPosition);
         }
     }
 
@@ -338,42 +359,41 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
     public void saveUserInformation() {
 
-        User.setName(this, nameField.getText().toString());
-        User.setHeight(this, Integer.parseInt(heightField.getText().toString()));
-        User.setWeight(this, Integer.parseInt(weightField.getText().toString()));
-        User.setDOB(this, yearSpinner, monthSpinner, dateSpinner);
-        User.setGender(this, maleRadio, femaleRadio, othersRadio);
-
-        User.setFatherName(this, fatherNameField.getText().toString());
-        User.setMotherName(this, motherNameField.getText().toString());
-
-        User.setState(this, stateSpinner.getSelectedItemPosition());
-        User.setDistrict(this, districtSpinner.getSelectedItemPosition());
-        User.setPinCode(this, Integer.parseInt(pinCodeField.getText().toString()));
-        User.setAddress(this, addressField.getText().toString());
-
-        User.setSpecialDiseases(this, specialDiseaseCheckboxes);
-
-        User.setDoctor(this, false);
-
         Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
 
+        Map<String,Object> objectMap=new HashMap<>();
+
+        objectMap.put("name",nameField.getText().toString());
+        objectMap.put("height",Integer.parseInt(heightField.getText().toString()));
+        objectMap.put("weight",Integer.parseInt(weightField.getText().toString()));
+        objectMap.put("DOB", FirebaseFirestoreUtils.getDateOfBirth(this,yearSpinner,monthSpinner,dateSpinner));
+        objectMap.put("gender",FirebaseFirestoreUtils.getGender(this,maleRadio,femaleRadio,othersRadio));
+
+        objectMap.put("fatherName",fatherNameField.getText().toString());
+        objectMap.put("motherName",motherNameField.getText().toString());
+        objectMap.put("state",stateSpinner.getSelectedItemPosition());
+        objectMap.put("district",districtSpinner.getSelectedItemPosition());
+        objectMap.put("pinCode",Integer.parseInt(pinCodeField.getText().toString()));
+        objectMap.put("address",addressField.getText().toString());
+        objectMap.put("specialDisease",FirebaseFirestoreUtils.getDiseasesArrayString(this,specialDiseaseCheckboxes));
+        objectMap.put("doctor",false);
+
+        Firebase.FireBaseFirestorePush(this,objectMap);
     }
 
-    public void getUserInformation() {
+    public void getUserInformation(Map<String,Object> objectMap) {
 
-        //Profile Pic
         Uri imageUri=User.getUserDp(this);
         userDp.setImageURI(imageUri);
 
         //personal details
-        userName = User.getName(this);
+        userName = (String) objectMap.get("name");
 
         //date of birth
         year = 2021;
         month = 0;
         date = 0;
-        DOB = User.getDOB(this);
+        DOB = (String) objectMap.get("DOB");
 
         //converting date into readable format
         if (!TextUtils.isEmpty(DOB)) {
@@ -383,36 +403,37 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             month = Integer.parseInt(format[1]);
             date = Integer.parseInt(format[0]);
         }
+        Log.d(TAG, "month "+DOB);
 
         //height and weight
-        height = User.getHeight(this);
-        weight = User.getWeight(this);
+        height = (long) objectMap.get("height");
+        weight = (long) objectMap.get("weight");
 
         //gender
-        gender = User.getGender(this);
+        gender = (String) objectMap.get("gender");
 
         //family details
-        fatherName = User.getFatherName(this);
-        motherName = User.getMotherName(this);
+        fatherName = (String) objectMap.get("fatherName");
+        motherName = (String) objectMap.get("motherName");
 
 
         //state and district
-        statePosition = User.getState(this);
+        statePosition = (long) objectMap.get("state");
         statesArray = JsonParser.getStatesFromJSON(this);
 
-        districtPosition = User.getDistrict(this);
-        districtsArray = JsonParser.getDistrictsFromJSON(this, statesArray[statePosition]);
+        districtPosition = (long) objectMap.get("district");
 
         //pinCode and address
-        pinCode = User.getPinCode(this);
-        address = User.getAddress(this);
+        pinCode = (long) objectMap.get("pinCode");
+        address =(String) objectMap.get("address");
 
         //special diseases
-        specialDiseases = User.getSpecialDiseases(this);
+        specialDiseases = (String) objectMap.get("specialDisease");
 
         //breaking array to into readable format
         for (int i = 0; i < 7; i++)
             diseasesArray[i] = specialDiseases.charAt(i) - 48;
+
     }
 
     /**=================================== METHOD FOR SETTING USER INFO IN EDIT MODE UI =====================================**/
@@ -483,8 +504,8 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             fatherNameTextField.setText(fatherName);
             motherNameTextField.setText(motherName);
 
-            stateTextField.setText(statesArray[statePosition]);
-            districtTextField.setText(districtsArray[districtPosition]);
+            stateTextField.setText(statesArray[(int) statePosition]);
+            districtTextField.setText(districtsArray[(int) districtPosition]);
 
             pinCodeTextField.setText(pinCode + "");
             addressTextField.setText(address);
@@ -524,5 +545,47 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             specialDiseasesTextFields[0].setText("------");
 
         }
+    }
+
+
+    public void FirestoreGetEditModeDetails(){
+
+        FirebaseFirestore db=FirebaseFirestore.getInstance();
+        resultMap=new HashMap<>();
+
+        ProgressDialog progressDialog=new ProgressDialog(this);
+        progressDialog.setTitle("Fetching Information");
+        progressDialog.show();
+
+        db.collection("users").document(Firebase.UNIQUE_HEALTH_ID).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        resultMap.put("name", documentSnapshot.getString("name"));
+                        resultMap.put("height", documentSnapshot.getLong("height"));
+                        resultMap.put("weight", documentSnapshot.getLong("weight"));
+                        resultMap.put("DOB", documentSnapshot.getString("DOB"));
+                        resultMap.put("gender", documentSnapshot.getString("gender"));
+                        resultMap.put("fatherName", documentSnapshot.getString("fatherName"));
+                        resultMap.put("motherName", documentSnapshot.getString("motherName"));
+                        resultMap.put("state", documentSnapshot.getLong("state"));
+                        resultMap.put("district", documentSnapshot.getLong("district"));
+                        resultMap.put("pinCode", documentSnapshot.getLong("pinCode"));
+                        resultMap.put("address", documentSnapshot.getString("address"));
+                        resultMap.put("specialDisease", documentSnapshot.getString("specialDisease"));
+                        resultMap.put("doctor", documentSnapshot.getBoolean("doctor"));
+
+                        getUserInformation(resultMap);
+                        setEditModeUserInformation();
+                        progressDialog.dismiss();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "failed");
+                    }
+                });
+
     }
 }

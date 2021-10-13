@@ -11,11 +11,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -24,12 +25,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Firebase {
+public class Firebase{
 
     private static final String TAG = "firebase";
     public static final int FIREBASE_REQUEST_CODE=100;
 
     public static String UNIQUE_HEALTH_ID="";
+    static Map<String,Object> resultMap;
+
 
     /**=================================== METHOD FOR FIREBASE AUTH UI =====================================**/
     public static Intent LoadFirebaseAUTHUI(){
@@ -69,46 +72,10 @@ public class Firebase {
             return resultCode != RESULT_CANCELED || requestCode != FIREBASE_REQUEST_CODE;
     }
 
-    public static void FireBaseFirestorePush(Context context){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String,String> map=new HashMap<>();
-        map.put("name","Ijlal");
-        map.put("age","20");
-
-        Log.d(TAG, "hello"+UNIQUE_HEALTH_ID);
-        if(!UNIQUE_HEALTH_ID.equals(""))
-        db.collection("rootFolder").document("users").collection("user").document(UNIQUE_HEALTH_ID).set(map)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d(TAG, "inserted");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "failed");
-                    }
-                });
-    }
-
-    public static void FirebaseFirestorePull(Context context){
+    /**====================================== METHOD TO PUSH DATA TO FIRESTORE ===========================================**/
+    public static void FireBaseFirestorePush(Context context,Map<String,Object> map){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-       db.collection("rootFolder").document("users").collection("user").document(UNIQUE_HEALTH_ID).get()
-               .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                   @Override
-                   public void onSuccess(DocumentSnapshot documentSnapshot) {
-                       Log.d(TAG, documentSnapshot.getString("name"));
-                       Log.d(TAG, documentSnapshot.getString("age"));
-                   }
-               })
-               .addOnFailureListener(new OnFailureListener() {
-                   @Override
-                   public void onFailure(@NonNull Exception e) {
-                       Log.d(TAG, "failed");
-                   }
-               });
-
+        db.collection("users").document(UNIQUE_HEALTH_ID).set(map);
     }
 }
