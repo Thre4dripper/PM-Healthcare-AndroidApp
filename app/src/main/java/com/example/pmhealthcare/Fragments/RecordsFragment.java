@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.pmhealthcare.Activities.TouchImageActivity;
 import com.example.pmhealthcare.Adapters.RecordsRecyclerAdapter;
+import com.example.pmhealthcare.Networking.Firebase;
 import com.example.pmhealthcare.R;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -81,8 +82,8 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
 
         if(resultCode==RESULT_OK  && requestCode==150){
            imageUriList.add(data.getData());
-            recyclerAdapter.notifyItemInserted(imageUriList.size()-1);
-
+           recyclerAdapter.notifyItemInserted(imageUriList.size()-1);
+            Firebase.FireBaseStoragePush(getContext(),data.getData());
         }
         progressDialog.dismiss();
     }
