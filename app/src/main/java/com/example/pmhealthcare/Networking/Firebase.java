@@ -21,11 +21,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -86,31 +88,34 @@ public class Firebase{
         db.collection("users").document(UNIQUE_HEALTH_ID).set(map);
     }
 
-    public static void FireBaseStoragePush(Context context, Uri imageUri){
+    public static void FireBaseStoragePush(Context context, Uri imageUri,List<String > list){
         FirebaseStorage firebaseStorage=FirebaseStorage.getInstance();
         StorageReference storageReference=firebaseStorage.getReference("users");
-        StorageReference fileRef=storageReference.child(System.currentTimeMillis()+"");
 
-        ProgressDialog progressDialog=new ProgressDialog(context);
-        progressDialog.setTitle("Uploading");
-        progressDialog.show();
+        String filename=System.currentTimeMillis()+"";
+        StorageReference fileRef=storageReference.child(filename);
+
 
         fileRef.putFile(imageUri)
                 .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         Toast.makeText(context, "uploaded", Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
                     }
                 })
-                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                .addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            double progress=(100.0 * snapshot.getBytesTransferred()/snapshot.getTotalByteCount());
-                            progressDialog.setMessage((int)progress+"%");
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context, "uploaded failed", Toast.LENGTH_SHORT).show();
                     }
                 });
 
+            FirebaseFirestore db=FirebaseFirestore.getInstance();
+            Map<String,Object> map=new HashMap<>();
 
+            list.add(filename);
+            map.put("docs",list);
+
+            db.collection("users").document(UNIQUE_HEALTH_ID).set(map, SetOptions.merge());
     }
 }
