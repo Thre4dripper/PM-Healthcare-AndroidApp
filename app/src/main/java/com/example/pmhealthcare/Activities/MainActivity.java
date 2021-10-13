@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.profile);
 
         InitFragments();
-        AUTH();
+       // AUTH();
     }
 
     /**====================================== METHOD FOR TRIGGERING FIREBASE AUTH ===================================**/
