@@ -387,13 +387,17 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         userDp.setImageURI(imageUri);
 
         //personal details
+        if(objectMap.get("name")!=null)
         userName = (String) objectMap.get("name");
+        else userName="";
 
         //date of birth
         year = 2021;
         month = 0;
         date = 0;
+        if(objectMap.get("DOB")!=null)
         DOB = (String) objectMap.get("DOB");
+        else DOB="";
 
         //converting date into readable format
         if (!TextUtils.isEmpty(DOB)) {
@@ -406,29 +410,46 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         Log.d(TAG, "month "+DOB);
 
         //height and weight
+        if(objectMap.get("height")!=null)
         height = (long) objectMap.get("height");
+        if(objectMap.get("weight")!=null)
         weight = (long) objectMap.get("weight");
 
         //gender
+        if(objectMap.get("gender")!=null)
         gender = (String) objectMap.get("gender");
 
         //family details
+        if(objectMap.get("fatherName")!=null)
         fatherName = (String) objectMap.get("fatherName");
+        else fatherName="";
+
+        if(objectMap.get("motherName")!=null)
         motherName = (String) objectMap.get("motherName");
+        else motherName="";
 
 
         //state and district
+        if(objectMap.get("state")!=null)
         statePosition = (long) objectMap.get("state");
+        else statePosition=0;
         statesArray = JsonParser.getStatesFromJSON(this);
 
+        if(objectMap.get("district")!=null)
         districtPosition = (long) objectMap.get("district");
+        else districtPosition=0;
 
         //pinCode and address
+        if(objectMap.get("pinCode")!=null)
         pinCode = (long) objectMap.get("pinCode");
+        if(objectMap.get("address")!=null)
         address =(String) objectMap.get("address");
+        else address="";
 
         //special diseases
+        if(objectMap.get("specialDisease")!=null)
         specialDiseases = (String) objectMap.get("specialDisease");
+        else specialDiseases="0000000";
 
         //breaking array to into readable format
         for (int i = 0; i < 7; i++)
