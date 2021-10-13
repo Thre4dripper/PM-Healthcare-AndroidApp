@@ -24,6 +24,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -40,6 +41,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public static final String USER_DETAILS_MODE_KEY="userDetailsModeKey";
     public static final int MODE_EDIT=0;
     public static final int MODE_VIEW=1;
+
+    public static String userDpUri;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -106,7 +109,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             intent.putExtra(USER_DETAILS_MODE_KEY,MODE_EDIT);
             startActivity(intent);
 
-            Firebase.FirebaseFirestorePull(getContext());
         }
 
         //View Profile Button On click

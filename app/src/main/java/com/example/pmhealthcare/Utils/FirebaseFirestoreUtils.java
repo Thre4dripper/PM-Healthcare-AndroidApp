@@ -7,11 +7,11 @@ import android.widget.Spinner;
 
 import java.util.Arrays;
 
-public class SharedPreferenceUtils {
+public class FirebaseFirestoreUtils {
 
     public static String getDateOfBirth(Context context, Spinner year, Spinner month, Spinner date){
         String DOB="";
-        DOB+=date.getSelectedItem().toString();
+        DOB+=date.getSelectedItemPosition();
         DOB=DOB+"-"+month.getSelectedItemPosition();
         DOB=DOB+"-"+year.getSelectedItem().toString();
         return DOB;
@@ -22,9 +22,9 @@ public class SharedPreferenceUtils {
         if(r1.isChecked())
             gender="Male";
         else if(r2.isChecked())
-            gender="Male";
+            gender="Female";
         else if(r3.isChecked())
-            gender="Male";
+            gender="Others";
         return gender;
     }
 

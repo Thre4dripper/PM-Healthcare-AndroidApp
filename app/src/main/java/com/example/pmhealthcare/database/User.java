@@ -7,7 +7,7 @@ import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
-import com.example.pmhealthcare.Utils.SharedPreferenceUtils;
+import com.example.pmhealthcare.Utils.FirebaseFirestoreUtils;
 
 public class User {
 
@@ -35,7 +35,7 @@ public class User {
         sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
         editor=sharedPreferences.edit();
 
-        String DOB = SharedPreferenceUtils.getDateOfBirth(context,year,month,date);
+        String DOB = FirebaseFirestoreUtils.getDateOfBirth(context,year,month,date);
         editor.putString("DateOfBirth",DOB);
         editor.apply();
     }
@@ -113,7 +113,7 @@ public class User {
         sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
         editor=sharedPreferences.edit();
 
-        String gender=SharedPreferenceUtils.getGender(context,r1,r2,r3);
+        String gender= FirebaseFirestoreUtils.getGender(context,r1,r2,r3);
         editor.putString("Gender",gender);
         editor.apply();
     }
@@ -198,7 +198,7 @@ public class User {
         sharedPreferences=context.getSharedPreferences(DATABASE_NAME,Context.MODE_PRIVATE);
         editor=sharedPreferences.edit();
 
-        String diseaseArrayString=SharedPreferenceUtils.getDiseasesArrayString(context,checkBoxes);
+        String diseaseArrayString= FirebaseFirestoreUtils.getDiseasesArrayString(context,checkBoxes);
 
         editor.putString("SpecialDiseases",diseaseArrayString);
         editor.apply();
