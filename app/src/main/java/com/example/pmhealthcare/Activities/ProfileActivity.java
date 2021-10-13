@@ -125,7 +125,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             viewScrollMode.setVisibility(View.GONE);
 
             InitEditModeUIElements();
-            FirestoreGetEditModeDetails();
+            FirestoreGetEditModeDetails(ProfileFragment.MODE_EDIT);
 
         }
         else if (intent.getIntExtra(ProfileFragment.USER_DETAILS_MODE_KEY, -1) == 1) {
@@ -133,7 +133,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             viewScrollMode.setVisibility(View.VISIBLE);
 
             InitViewModeUIElements();
-            setViewModeUserInformation();
+            FirestoreGetEditModeDetails(ProfileFragment.MODE_VIEW);
         }
 
     }
@@ -436,7 +436,10 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         statesArray = JsonParser.getStatesFromJSON(this);
 
         if(objectMap.get("district")!=null)
-        districtPosition = (long) objectMap.get("district");
+        {
+            districtPosition = (long) objectMap.get("district");
+            districtsArray = JsonParser.getDistrictsFromJSON(this, statesArray[(int) statePosition]);
+        }
         else districtPosition=0;
 
         //pinCode and address
@@ -519,7 +522,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             heightTextField.setText(height + " cm");
             weightTextField.setText(weight + " kg");
 
-            dobTextField.setText(this.date + "-" + (this.month + 1) + "-" + this.year);
+            dobTextField.setText((this.date+1) + "-" + (this.month + 1) + "-" + this.year);
             genderTextField.setText(gender);
 
             fatherNameTextField.setText(fatherName);
@@ -569,7 +572,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     }
 
 
-    public void FirestoreGetEditModeDetails(){
+    public void FirestoreGetEditModeDetails(int mode) {
 
         FirebaseFirestore db=FirebaseFirestore.getInstance();
         resultMap=new HashMap<>();
@@ -597,7 +600,10 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                         resultMap.put("doctor", documentSnapshot.getBoolean("doctor"));
 
                         getUserInformation(resultMap);
+                        if(mode==ProfileFragment.MODE_EDIT)
                         setEditModeUserInformation();
+                        else if(mode==ProfileFragment.MODE_VIEW)
+                            setViewModeUserInformation();
                         progressDialog.dismiss();
                     }
                 })
