@@ -3,9 +3,11 @@ package com.example.pmhealthcare.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.pmhealthcare.R;
 import com.ortiz.touchview.TouchImageView;
 
@@ -21,6 +23,6 @@ public class TouchImageActivity extends AppCompatActivity {
 
         Intent intent=getIntent();
 
-        touchImageView.setImageURI(intent.getParcelableExtra("imageUri"));
+        Glide.with(this).load((Uri) intent.getParcelableExtra("imageUri")).into(touchImageView);
     }
 }

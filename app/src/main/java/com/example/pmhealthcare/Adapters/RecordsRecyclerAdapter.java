@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.pmhealthcare.R;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class RecordsRecyclerAdapter extends RecyclerView.Adapter<RecordsRecycler
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.recordsView.setImageURI(list.get(position));
+        Glide.with(mContext).load(list.get(position)).into(holder.recordsView);
     }
 
     @Override
