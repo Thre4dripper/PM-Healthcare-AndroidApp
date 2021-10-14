@@ -24,7 +24,7 @@ public class RecordsRecyclerAdapter extends RecyclerView.Adapter<RecordsRecycler
 
 
     public interface RecordsItemOnClickInterface{
-        void onCLick(int position,Uri imageUri,String imageName);
+        void onCLick(int position,Uri imageUri);
     }
 
     public static RecordsItemOnClickInterface recordsItemOnClickInterface;
@@ -32,7 +32,6 @@ public class RecordsRecyclerAdapter extends RecyclerView.Adapter<RecordsRecycler
     public RecordsRecyclerAdapter(Context context, List<RecordDetails> list, RecordsItemOnClickInterface onClickInterface){
         mContext=context;
         RecordsRecyclerAdapter.list =list;
-
 
         recordsItemOnClickInterface=onClickInterface;
     }
@@ -51,6 +50,7 @@ public class RecordsRecyclerAdapter extends RecyclerView.Adapter<RecordsRecycler
         Glide.with(mContext).load(list.get(position).getImageID()).into(holder.recordsView);
 
         holder.textView.setText(list.get(position).getName());
+        //System.out.println(list.get(position).getName());
     }
 
     @Override
@@ -63,6 +63,7 @@ public class RecordsRecyclerAdapter extends RecyclerView.Adapter<RecordsRecycler
 
         ImageView recordsView;
         TextView textView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             recordsView=itemView.findViewById(R.id.record_image_view);
@@ -71,7 +72,7 @@ public class RecordsRecyclerAdapter extends RecyclerView.Adapter<RecordsRecycler
             recordsView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    recordsItemOnClickInterface.onCLick(getAdapterPosition(), Uri.parse(list.get(getAdapterPosition()).getImageID()),list.get(getAdapterPosition()).getName());
+                    recordsItemOnClickInterface.onCLick(getAdapterPosition(), Uri.parse(list.get(getAdapterPosition()).getImageID()));
                 }
             });
         }

@@ -3,7 +3,7 @@ package com.example.pmhealthcare.database;
 import android.net.Uri;
 
 public class RecordDetails {
-    String name="New Record";
+    String name;
     String imageID;
     int type;
 

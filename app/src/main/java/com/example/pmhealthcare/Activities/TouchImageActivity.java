@@ -14,7 +14,6 @@ import com.ortiz.touchview.TouchImageView;
 public class TouchImageActivity extends AppCompatActivity {
 
     TouchImageView touchImageView;
-    EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,11 +21,10 @@ public class TouchImageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_touch_image);
 
         touchImageView=findViewById(R.id.touch_image_view);
-        editText=findViewById(R.id.record_name_edit_text);
 
         Intent intent=getIntent();
 
         Glide.with(this).load((Uri) intent.getParcelableExtra("imageUri")).into(touchImageView);
-        editText.setText(intent.getStringExtra("imageName"));
+
     }
 }
