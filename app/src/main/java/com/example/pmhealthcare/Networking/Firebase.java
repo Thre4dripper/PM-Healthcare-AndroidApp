@@ -90,7 +90,7 @@ public class Firebase{
 
     public static void FireBaseStoragePush(Context context, Uri imageUri,List<String > list){
         FirebaseStorage firebaseStorage=FirebaseStorage.getInstance();
-        StorageReference storageReference=firebaseStorage.getReference("users");
+        StorageReference storageReference=firebaseStorage.getReference("users/"+UNIQUE_HEALTH_ID);
 
         String filename=System.currentTimeMillis()+"";
         StorageReference fileRef=storageReference.child(filename);

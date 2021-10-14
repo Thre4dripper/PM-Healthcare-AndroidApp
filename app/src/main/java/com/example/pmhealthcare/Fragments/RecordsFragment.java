@@ -114,7 +114,7 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
 
     public void FireBaseStoragePull(){
         FirebaseStorage firebaseStorage=FirebaseStorage.getInstance();
-        StorageReference storageReference=firebaseStorage.getReference("users");
+        StorageReference storageReference=firebaseStorage.getReference("users/"+Firebase.UNIQUE_HEALTH_ID);
 
         for(int i=0;i<imageNames.size();i++){
             StorageReference imageRef=storageReference.child(imageNames.get(i));
