@@ -87,11 +87,18 @@ public class Firebase{
             return resultCode != RESULT_CANCELED || requestCode != FIREBASE_REQUEST_CODE;
     }
 
-    public void setUserDP(Context context){
+    public static void setUserDP(Context context,Uri imageUri){
         FirebaseStorage firebaseStorage=FirebaseStorage.getInstance();
         StorageReference storageReference=firebaseStorage.getReference("users/"+UNIQUE_HEALTH_ID);
 
         StorageReference fileRef=storageReference.child("userDp");
+
+        fileRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                Toast.makeText(context, "Uploaded", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**====================================== METHOD TO PUSH DATA TO FIRESTORE ===========================================**/

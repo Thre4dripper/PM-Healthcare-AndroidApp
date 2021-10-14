@@ -23,6 +23,7 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
 
+import com.bumptech.glide.Glide;
 import com.example.pmhealthcare.Fragments.ProfileFragment;
 import com.example.pmhealthcare.Networking.Firebase;
 import com.example.pmhealthcare.R;
@@ -383,8 +384,8 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
     public void getUserInformation(Map<String,Object> objectMap) {
 
-        Uri imageUri=User.getUserDp(this);
-        userDp.setImageURI(imageUri);
+        if(ProfileFragment.userDpUri!=null)
+        Glide.with(this).load(ProfileFragment.userDpUri).into(userDp);
 
         //personal details
         if(objectMap.get("name")!=null)
