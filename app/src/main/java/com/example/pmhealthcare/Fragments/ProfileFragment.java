@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -16,15 +17,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.pmhealthcare.Activities.ProfileActivity;
 import com.example.pmhealthcare.Networking.Firebase;
 import com.example.pmhealthcare.R;
 import com.example.pmhealthcare.database.User;
 import com.firebase.ui.auth.AuthUI;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,7 +49,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public static final int MODE_EDIT=0;
     public static final int MODE_VIEW=1;
 
-    public static String userDpUri;
+    public static Uri userDpUri;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -75,10 +82,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         feedbackBtn.setOnClickListener(this);
         userDp.setOnClickListener(this);
 
-        String userName=User.getName(getContext());
-        if(userName.equals(""))
-            userNameTextView.setText("User Name");
-        else userNameTextView.setText(userName);
+        setUserName();
 
         setUserDp();
     }
@@ -141,9 +145,35 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
 /**================================= METHOD FOR SETTING USER DP ===============================================**/
     public void setUserDp() {
-        Uri imageUri=User.getUserDp(getContext());
-        if(!imageUri.toString().equals(""))
-        userDp.setImageURI(imageUri);
+
+        FirebaseStorage firebaseStorage=FirebaseStorage.getInstance();
+        StorageReference storageReference=firebaseStorage.getReference("users/"+Firebase.UNIQUE_HEALTH_ID);
+
+        StorageReference fileRef=storageReference.child("userDp");
+        fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+
+                //User.setUserDp(getContext(),uri.toString());
+                Glide.with(getContext()).load(uri).into(userDp);
+                userDpUri=uri;
+            }
+        });
+
+    }
+
+    public void setUserName(){
+        FirebaseFirestore db=FirebaseFirestore.getInstance();
+
+        db.collection("users").document(Firebase.UNIQUE_HEALTH_ID).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.getString("name")!=null)
+                            userNameTextView.setText(documentSnapshot.getString("name"));
+                        else userNameTextView.setText("User Name");
+                    }
+                });
     }
 
     /**================================================ ON ACTIVITY RESULT ====================================**/
@@ -153,7 +183,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         if(resultCode==RESULT_OK  && requestCode==150){
             userDp.setImageURI(data.getData());
-            User.setUserDp(getContext(),data.getData().toString());
+            //User.setUserDp(getContext(),data.getData().toString());
+            Firebase.setUserDP(getContext(),data.getData());
         }
     }
 }
