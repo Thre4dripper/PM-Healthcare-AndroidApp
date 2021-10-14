@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.pmhealthcare.database.RecordDetails;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,7 +41,7 @@ public class Firebase{
     public static final int FIREBASE_REQUEST_CODE=100;
 
     public static String UNIQUE_HEALTH_ID="";
-    static Map<String,Object> resultMap;
+    public static String ImageName="";
 
 
     /**=================================== METHOD FOR FIREBASE AUTH UI =====================================**/
@@ -88,13 +89,12 @@ public class Firebase{
         db.collection("users").document(UNIQUE_HEALTH_ID).set(map);
     }
 
-    public static void FireBaseStoragePush(Context context, Uri imageUri,List<String > list){
+    public static void FireBaseStoragePush(Context context, Uri imageUri,List<RecordDetails> list){
         FirebaseStorage firebaseStorage=FirebaseStorage.getInstance();
         StorageReference storageReference=firebaseStorage.getReference("users/"+UNIQUE_HEALTH_ID);
 
         String filename=System.currentTimeMillis()+"";
         StorageReference fileRef=storageReference.child(filename);
-
 
         fileRef.putFile(imageUri)
                 .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -113,7 +113,7 @@ public class Firebase{
             FirebaseFirestore db=FirebaseFirestore.getInstance();
             Map<String,Object> map=new HashMap<>();
 
-            list.add(filename);
+            list.add(new RecordDetails("New Record",filename,0));
             map.put("docs",list);
 
             db.collection("users").document(UNIQUE_HEALTH_ID).set(map, SetOptions.merge());

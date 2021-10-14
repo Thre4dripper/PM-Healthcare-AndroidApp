@@ -20,6 +20,7 @@ import com.example.pmhealthcare.Activities.TouchImageActivity;
 import com.example.pmhealthcare.Adapters.RecordsRecyclerAdapter;
 import com.example.pmhealthcare.Networking.Firebase;
 import com.example.pmhealthcare.R;
+import com.example.pmhealthcare.database.RecordDetails;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,6 +31,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class RecordsFragment extends Fragment implements View.OnClickListener, RecordsRecyclerAdapter.RecordsItemOnClickInterface {
 
@@ -39,8 +41,10 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
     RecyclerView recyclerView;
     RecordsRecyclerAdapter recyclerAdapter;
 
-    public static List<String> imageNames=new ArrayList<>();
-    public static List<Uri> imageUriList=new ArrayList<>();
+    public static List<RecordDetails> localRecordDetailsList=new ArrayList<>();
+    public static List<RecordDetails> cloudRecordDetailsList =new ArrayList<>();
+    public static List<Map<String,Object>> map=new ArrayList<>();
+
     ProgressDialog progressDialog;
     public RecordsFragment() {
         // Required empty public constructor
@@ -62,16 +66,16 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
     }
 
     public void InitUIElements(){
-        imageUriList.clear();
-        imageNames.clear();
+        localRecordDetailsList.clear();
+        cloudRecordDetailsList.clear();
 
         floatingActionButton.setOnClickListener(this);
 
-        recyclerAdapter=new RecordsRecyclerAdapter(getContext(),imageUriList,this);
+        setImageNames();
+
+        recyclerAdapter=new RecordsRecyclerAdapter(getContext(),localRecordDetailsList,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recyclerAdapter);
-
-        setImageNames();
 
     }
 
@@ -96,35 +100,39 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode==RESULT_OK  && requestCode==150){
-           imageUriList.add(data.getData());
-           recyclerAdapter.notifyItemInserted(imageUriList.size()-1);
-            Firebase.FireBaseStoragePush(getContext(),data.getData(),imageNames);
-
-            Log.d(TAG, imageNames+"");
+           localRecordDetailsList.add(new RecordDetails("New Record",data.getData().toString(),0));
+           recyclerAdapter.notifyItemInserted(localRecordDetailsList.size()-1);
+            Firebase.FireBaseStoragePush(getContext(),data.getData(), cloudRecordDetailsList);
         }
         progressDialog.dismiss();
     }
 
     @Override
-    public void onCLick(int position, Uri imageUri) {
+    public void onCLick(int position, Uri imageUri,String imageName) {
         Intent intent=new Intent(getContext(), TouchImageActivity.class);
         intent.putExtra("imageUri",imageUri);
+        intent.putExtra("imageName",imageName);
         startActivity(intent);
     }
 
+    public int CloudRecordIterator=0;
     public void FireBaseStoragePull(){
         FirebaseStorage firebaseStorage=FirebaseStorage.getInstance();
         StorageReference storageReference=firebaseStorage.getReference("users/"+Firebase.UNIQUE_HEALTH_ID);
 
-        for(int i=0;i<imageNames.size();i++){
-            StorageReference imageRef=storageReference.child(imageNames.get(i));
+        for(int i = 0; i < cloudRecordDetailsList.size(); i++){
+            StorageReference imageRef=storageReference.child(cloudRecordDetailsList.get(i).getImageID());
 
+            CloudRecordIterator=i;
             imageRef.getDownloadUrl()
                     .addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            imageUriList.add(uri);
-                            recyclerAdapter.notifyDataSetChanged();
+                            localRecordDetailsList.add(new RecordDetails(cloudRecordDetailsList.get(CloudRecordIterator).getName(),
+                                    uri.toString(),
+                                    cloudRecordDetailsList.get(CloudRecordIterator).getType()));
+
+                            recyclerAdapter.notifyItemInserted(localRecordDetailsList.size()-1);
                         }
                     });
         }
@@ -142,10 +150,18 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if(documentSnapshot.get("docs")!=null)
-                        imageNames= (List<String>) documentSnapshot.get("docs");
+
 
                         if(documentSnapshot.get("docs")!=null)
+                        {
+                            map = (List<Map<String, Object>>) documentSnapshot.get("docs");
+                            for(int i=0;i<map.size();i++)
+                            cloudRecordDetailsList.add(new RecordDetails(map.get(i).get("name").toString(),
+                                    map.get(i).get("imageID").toString(),
+                                    Integer.parseInt(map.get(i).get("type").toString())));
+                        }
+
+                        Log.d(TAG, "onSuccess: "+map);
                         FireBaseStoragePull();
                         progressDialog.dismiss();
                     }
