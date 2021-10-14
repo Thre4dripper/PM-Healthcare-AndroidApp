@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.pmhealthcare.Fragments.RecordsFragment;
 import com.example.pmhealthcare.database.RecordDetails;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -113,7 +114,7 @@ public class Firebase{
             FirebaseFirestore db=FirebaseFirestore.getInstance();
             Map<String,Object> map=new HashMap<>();
 
-            list.add(new RecordDetails("New Record",filename,0));
+            list.add(new RecordDetails(RecordsFragment.RecordName,filename,0));
             map.put("docs",list);
 
             db.collection("users").document(UNIQUE_HEALTH_ID).set(map, SetOptions.merge());
