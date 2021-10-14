@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     /**====================================== METHOD FOR TRIGGERING FIREBASE AUTH ===================================**/
     public void AUTH() {
 
-        Intent intent = Firebase.LoadFirebaseAUTHUI();
+         Intent intent = Firebase.LoadFirebaseAUTHUI();
         if (intent != null)
             startActivityForResult(intent, Firebase.FIREBASE_REQUEST_CODE);
 
