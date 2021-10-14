@@ -2,17 +2,22 @@ package com.example.pmhealthcare.Networking;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.CONNECTIVITY_SERVICE;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.pmhealthcare.Activities.MainActivity;
 import com.example.pmhealthcare.Fragments.RecordsFragment;
+import com.example.pmhealthcare.R;
 import com.example.pmhealthcare.database.RecordDetails;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -82,6 +87,13 @@ public class Firebase{
             return resultCode != RESULT_CANCELED || requestCode != FIREBASE_REQUEST_CODE;
     }
 
+    public void setUserDP(Context context){
+        FirebaseStorage firebaseStorage=FirebaseStorage.getInstance();
+        StorageReference storageReference=firebaseStorage.getReference("users/"+UNIQUE_HEALTH_ID);
+
+        StorageReference fileRef=storageReference.child("userDp");
+    }
+
     /**====================================== METHOD TO PUSH DATA TO FIRESTORE ===========================================**/
     public static void FireBaseFirestorePush(Context context,Map<String,Object> map){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -89,34 +101,58 @@ public class Firebase{
         db.collection("users").document(UNIQUE_HEALTH_ID).set(map);
     }
 
+    /**====================================== METHOD TO PUSH RECORDS TO FIREBASE STORAGE =========================================**/
     public static void FireBaseStoragePush(Context context, Uri imageUri,List<RecordDetails> list){
         FirebaseStorage firebaseStorage=FirebaseStorage.getInstance();
         StorageReference storageReference=firebaseStorage.getReference("users/"+UNIQUE_HEALTH_ID);
 
-        String filename=System.currentTimeMillis()+"";
-        StorageReference fileRef=storageReference.child(filename);
+        FirebaseFirestore db=FirebaseFirestore.getInstance();
+        Map<String,Object> map=new HashMap<>();
 
-        fileRef.putFile(imageUri)
-                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        Toast.makeText(context, "uploaded", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "uploaded failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-            FirebaseFirestore db=FirebaseFirestore.getInstance();
-            Map<String,Object> map=new HashMap<>();
+        if(isConnected) {
+            String filename = System.currentTimeMillis() + "";
+            StorageReference fileRef = storageReference.child(filename);
 
-            list.add(new RecordDetails(RecordsFragment.RecordName,filename,0));
-            map.put("docs",list);
+            fileRef.putFile(imageUri)
+                    .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                            Toast.makeText(context, "uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context, "upload failed", Toast.LENGTH_SHORT).show();
+
+                            list.remove(new RecordDetails(RecordsFragment.RecordName, filename, 0));
+                            map.put("docs", list);
+                            db.collection("users").document(UNIQUE_HEALTH_ID).set(map, SetOptions.merge());
+                        }
+                    });
+
+
+            list.add(new RecordDetails(RecordsFragment.RecordName, filename, 0));
+            map.put("docs", list);
 
             db.collection("users").document(UNIQUE_HEALTH_ID).set(map, SetOptions.merge());
+
+            db.collection("users").document(Firebase.UNIQUE_HEALTH_ID).get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.get("docs") != null) {
+                                RecordsFragment.map = (List<Map<String, Object>>) documentSnapshot.get("docs");
+                            }
+                        }
+                    });
+        }
+        else Toast.makeText(context, "No internet Connection Available", Toast.LENGTH_SHORT).show();
+
     }
 
     /**========================================== FIREBASE CLOUD STORAGE DELETE FUNCTION ====================================================**/
@@ -134,6 +170,7 @@ public class Firebase{
         });
 
         FirebaseFirestore db=FirebaseFirestore.getInstance();
+
         Map<String,Object> map=new HashMap<>();
 
         map.put("docs",list);

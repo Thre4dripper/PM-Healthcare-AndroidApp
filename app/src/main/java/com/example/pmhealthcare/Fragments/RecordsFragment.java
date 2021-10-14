@@ -2,9 +2,12 @@ package com.example.pmhealthcare.Fragments;
 
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.CONNECTIVITY_SERVICE;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -126,12 +130,21 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
     }
 
     public void addRecord(EditText editText, Intent data) {
-        RecordName = editText.getText().toString();
 
-        localRecordDetailsList.add(new RecordDetails(RecordName, data.getData().toString(), 0));
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-        recyclerAdapter.notifyDataSetChanged();
-        Firebase.FireBaseStoragePush(getContext(), data.getData(), cloudRecordDetailsList);
+        //network security
+        if(isConnected) {
+            RecordName = editText.getText().toString();
+
+            localRecordDetailsList.add(new RecordDetails(RecordName, data.getData().toString(), 0));
+
+            recyclerAdapter.notifyDataSetChanged();
+            Firebase.FireBaseStoragePush(getContext(), data.getData(), cloudRecordDetailsList);
+        }
+        else Toast.makeText(getContext(), "No internet Connection Available", Toast.LENGTH_SHORT).show();
     }
 
     @Override
