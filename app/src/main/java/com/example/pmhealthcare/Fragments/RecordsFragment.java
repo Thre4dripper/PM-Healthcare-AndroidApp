@@ -143,10 +143,22 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
     }
 
     @Override
-    public void onCLick(int position, Uri imageUri) {
+    public void onRecordsItemOnCLick(int position, Uri imageUri) {
         Intent intent = new Intent(getContext(), TouchImageActivity.class);
         intent.putExtra("imageUri", imageUri);
         startActivity(intent);
+    }
+
+    /**======================================== METHOD FOR DELETING PARTICULAR RECORD ============================================ **/
+    @Override
+    public void deleteOnClick(int position) {
+        localRecordDetailsList.remove(position);
+        cloudRecordDetailsList.remove(position);
+        recyclerAdapter.notifyItemRemoved(position);
+
+        Firebase.FireBaseStorageDelete(getContext(),  map.get(position).get("imageID").toString(),cloudRecordDetailsList);
+        map.remove(position);
+
     }
 
 
