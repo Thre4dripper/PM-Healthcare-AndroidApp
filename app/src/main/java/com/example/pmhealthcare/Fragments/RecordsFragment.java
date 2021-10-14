@@ -43,6 +43,7 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
     public static List<RecordDetails> cloudRecordDetailsList = new ArrayList<>();
     public static List<Map<String, Object>> map = new ArrayList<>();
     public static String RecordName = "";
+
     FloatingActionButton floatingActionButton;
     RecyclerView recyclerView;
     RecordsRecyclerAdapter recyclerAdapter;
