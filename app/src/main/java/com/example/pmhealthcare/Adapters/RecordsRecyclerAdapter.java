@@ -29,7 +29,6 @@ public class RecordsRecyclerAdapter extends RecyclerView.Adapter<RecordsRecycler
 
     Context mContext;
     public static List<RecordDetails> list;
-    ProgressDialog progressDialog;
 
 
     public interface RecordsItemOnClickInterface{
@@ -42,20 +41,6 @@ public class RecordsRecyclerAdapter extends RecyclerView.Adapter<RecordsRecycler
     public RecordsRecyclerAdapter(Context context, List<RecordDetails> list, RecordsItemOnClickInterface onClickInterface){
         mContext=context;
         RecordsRecyclerAdapter.list =list;
-
-        if(list.size()!=0)
-        {
-            progressDialog=new ProgressDialog(mContext);
-            progressDialog.setTitle("Loading Records...");
-            progressDialog.show();
-        }
-        else
-        {
-            Toast.makeText(mContext, "No Records Available", Toast.LENGTH_SHORT).show();
-            Toast.makeText(mContext, "Or Check your Internet Connection", Toast.LENGTH_SHORT).show();
-        }
-
-
         recordsItemOnClickInterface=onClickInterface;
     }
 
@@ -71,21 +56,7 @@ public class RecordsRecyclerAdapter extends RecyclerView.Adapter<RecordsRecycler
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Glide.with(mContext).load(list.get(position).getImageID()).listener(new RequestListener<Drawable>() {
-            @Override
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                progressDialog.dismiss();
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                //Toast.makeText(mContext, "loaded", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-                return false;
-            }
-        }).into(holder.recordsView);
-
+        Glide.with(mContext).load(list.get(position).getImageID()).into(holder.recordsView);
         holder.textView.setText(list.get(position).getName());
         //System.out.println(list.get(position).getName());
     }
