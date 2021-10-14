@@ -112,7 +112,8 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
         editText.setLayoutParams(editTextParams);
 
         new MaterialAlertDialogBuilder(getActivity())
-                .setTitle("Enter document's name")
+                .setTitle("Name Document")
+                .setMessage("Enter a suitable name")
                 .setView(layout)
                 .setPositiveButton("Add", (dialogInterface, i) -> {
                     addRecord(editText, data);
@@ -128,7 +129,7 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
 
         localRecordDetailsList.add(new RecordDetails(RecordName, data.getData().toString(), 0));
 
-        recyclerAdapter.notifyItemInserted(localRecordDetailsList.size() - 1);
+        recyclerAdapter.notifyDataSetChanged();
         Firebase.FireBaseStoragePush(getContext(), data.getData(), cloudRecordDetailsList);
     }
 
@@ -152,12 +153,24 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
     /**======================================== METHOD FOR DELETING PARTICULAR RECORD ============================================ **/
     @Override
     public void deleteOnClick(int position) {
-        localRecordDetailsList.remove(position);
-        cloudRecordDetailsList.remove(position);
-        recyclerAdapter.notifyItemRemoved(position);
 
-        Firebase.FireBaseStorageDelete(getContext(),  map.get(position).get("imageID").toString(),cloudRecordDetailsList);
-        map.remove(position);
+        new MaterialAlertDialogBuilder(getActivity())
+                .setTitle("Delete")
+                .setMessage("Do you want to remove this record")
+                .setPositiveButton("Yes", (dialogInterface, i) -> {
+
+                    localRecordDetailsList.remove(position);
+                    cloudRecordDetailsList.remove(position);
+                    recyclerAdapter.notifyItemRemoved(position);
+
+                    Firebase.FireBaseStorageDelete(getContext(),  map.get(position).get("imageID").toString(),cloudRecordDetailsList);
+                    map.remove(position);
+
+                })
+                .setNegativeButton("Cancel", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                })
+                .show();
 
     }
 
@@ -177,7 +190,7 @@ public class RecordsFragment extends Fragment implements View.OnClickListener, R
                             uri.toString(),
                             cloudRecordDetailsList.get(localRecordDetailsList.size()).getType())
                     );
-                    recyclerAdapter.notifyItemInserted(localRecordDetailsList.size() - 1);
+                    recyclerAdapter.notifyDataSetChanged();
 
                 }
             });
