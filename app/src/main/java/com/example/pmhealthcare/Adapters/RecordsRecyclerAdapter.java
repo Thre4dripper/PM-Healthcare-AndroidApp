@@ -24,7 +24,8 @@ public class RecordsRecyclerAdapter extends RecyclerView.Adapter<RecordsRecycler
 
 
     public interface RecordsItemOnClickInterface{
-        void onCLick(int position,Uri imageUri);
+        void onRecordsItemOnCLick(int position, Uri imageUri);
+        void deleteOnClick(int position);
     }
 
     public static RecordsItemOnClickInterface recordsItemOnClickInterface;
@@ -63,16 +64,25 @@ public class RecordsRecyclerAdapter extends RecyclerView.Adapter<RecordsRecycler
 
         ImageView recordsView;
         TextView textView;
+        ImageView deleteButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             recordsView=itemView.findViewById(R.id.record_image_view);
             textView=itemView.findViewById(R.id.record_display_name);
+            deleteButton=itemView.findViewById(R.id.record_delete_button);
 
             recordsView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    recordsItemOnClickInterface.onCLick(getAdapterPosition(), Uri.parse(list.get(getAdapterPosition()).getImageID()));
+                    recordsItemOnClickInterface.onRecordsItemOnCLick(getAdapterPosition(), Uri.parse(list.get(getAdapterPosition()).getImageID()));
+                }
+            });
+
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    recordsItemOnClickInterface.deleteOnClick(getAdapterPosition());
                 }
             });
         }

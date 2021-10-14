@@ -42,7 +42,6 @@ public class Firebase{
     public static final int FIREBASE_REQUEST_CODE=100;
 
     public static String UNIQUE_HEALTH_ID="";
-    public static String ImageName="";
 
 
     /**=================================== METHOD FOR FIREBASE AUTH UI =====================================**/
@@ -118,5 +117,27 @@ public class Firebase{
             map.put("docs",list);
 
             db.collection("users").document(UNIQUE_HEALTH_ID).set(map, SetOptions.merge());
+    }
+
+    /**========================================== FIREBASE CLOUD STORAGE DELETE FUNCTION ====================================================**/
+
+    public static void FireBaseStorageDelete(Context context,String deleteImageName,List<RecordDetails> list){
+        FirebaseStorage firebaseStorage=FirebaseStorage.getInstance();
+        StorageReference storageReference=firebaseStorage.getReference("users/"+UNIQUE_HEALTH_ID);
+
+        StorageReference fileRef=storageReference.child(deleteImageName);
+        fileRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(context, "removed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        FirebaseFirestore db=FirebaseFirestore.getInstance();
+        Map<String,Object> map=new HashMap<>();
+
+        map.put("docs",list);
+        db.collection("users").document(UNIQUE_HEALTH_ID).set(map, SetOptions.merge());
+
     }
 }
