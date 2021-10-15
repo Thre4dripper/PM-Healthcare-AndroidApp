@@ -105,7 +105,7 @@ public class Firebase{
     public static void FireBaseFirestorePush(Context context,Map<String,Object> map){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("users").document(UNIQUE_HEALTH_ID).set(map);
+        db.collection("users").document(UNIQUE_HEALTH_ID).set(map,SetOptions.merge());
     }
 
     /**====================================== METHOD TO PUSH RECORDS TO FIREBASE STORAGE =========================================**/

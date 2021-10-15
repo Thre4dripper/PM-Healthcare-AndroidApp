@@ -2,7 +2,6 @@ package com.example.pmhealthcare.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,11 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.AsyncTaskLoader;
-import androidx.loader.content.Loader;
 
 import com.bumptech.glide.Glide;
 import com.example.pmhealthcare.Fragments.ProfileFragment;
@@ -29,7 +24,6 @@ import com.example.pmhealthcare.Networking.Firebase;
 import com.example.pmhealthcare.R;
 import com.example.pmhealthcare.Utils.FirebaseFirestoreUtils;
 import com.example.pmhealthcare.Utils.JsonParser;
-import com.example.pmhealthcare.database.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;

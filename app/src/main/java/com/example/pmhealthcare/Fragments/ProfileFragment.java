@@ -11,7 +11,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -30,10 +29,8 @@ import com.bumptech.glide.request.target.Target;
 import com.example.pmhealthcare.Activities.ProfileActivity;
 import com.example.pmhealthcare.Networking.Firebase;
 import com.example.pmhealthcare.R;
-import com.example.pmhealthcare.database.User;
 import com.firebase.ui.auth.AuthUI;
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;

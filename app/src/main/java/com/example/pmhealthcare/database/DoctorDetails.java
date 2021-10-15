@@ -1,7 +1,11 @@
 package com.example.pmhealthcare.database;
 
+import android.net.Uri;
+
 public class DoctorDetails {
 
+    Uri doctorDp;
+    String healthID;
     String qualification;
     String institution;
     String specialization;
@@ -11,7 +15,11 @@ public class DoctorDetails {
     int[] locationCoordinates;
     String status;
 
-    public DoctorDetails(String qualification, String institution, String specialization, int registrationNumber, int helpLineNumber, int experience, int[] locationCoordinates, String status) {
+    public DoctorDetails(Uri doctorDp, String healthID, String qualification, String institution, String specialization, int registrationNumber,
+                         int helpLineNumber, int experience, int[] locationCoordinates, String status) {
+
+        this.doctorDp = doctorDp;
+        this.healthID = healthID;
         this.qualification = qualification;
         this.institution = institution;
         this.specialization = specialization;
@@ -20,6 +28,22 @@ public class DoctorDetails {
         this.experience = experience;
         this.locationCoordinates = locationCoordinates;
         this.status = status;
+    }
+
+    public Uri getDoctorDp() {
+        return doctorDp;
+    }
+
+    public void setDoctorDp(Uri doctorDp) {
+        this.doctorDp = doctorDp;
+    }
+
+    public String getHealthID() {
+        return healthID;
+    }
+
+    public void setHealthID(String healthID) {
+        this.healthID = healthID;
     }
 
     public String getQualification() {
