@@ -3,6 +3,7 @@ package com.example.pmhealthcare.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.os.Bundle;
 import android.view.View;
@@ -40,7 +41,7 @@ public class DoctorRegistration extends AppCompatActivity implements DegreesRecy
     }
 
     public void InitUIElements(){
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,LinearLayoutManager.HORIZONTAL));
 
         recyclerAdapter=new DegreesRecyclerAdapter(this,degreesList,this);
         recyclerView.setAdapter(recyclerAdapter);
@@ -56,9 +57,12 @@ public class DoctorRegistration extends AppCompatActivity implements DegreesRecy
 
     @Override
     public void onClick(View v) {
-        degreesList.add(0,qualificationsEditText.getText().toString());
-        qualificationsEditText.setText("");
-        recyclerAdapter.notifyItemInserted(0);
-        recyclerView.scrollToPosition(0);
+        if(!qualificationsEditText.getText().toString().isEmpty()){
+            degreesList.add(0,qualificationsEditText.getText().toString());
+            qualificationsEditText.setText("");
+            recyclerAdapter.notifyItemInserted(0);
+            recyclerView.scrollToPosition(0);
+        }
+
     }
 }

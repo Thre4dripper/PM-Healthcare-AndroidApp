@@ -7,7 +7,7 @@
     tools:context=".Fragments.DigidocFragment">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/register_doctor_button"
+        android:id="@+id/doctor_registration_card_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -41,7 +41,7 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_doctor_button" />
+        app:layout_constraintTop_toBottomOf="@+id/doctor_registration_card_button" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/digiDoc_recycler_view"
