@@ -59,7 +59,7 @@ public class RecordsRecyclerAdapter extends RecyclerView.Adapter<RecordsRecycler
             Toast.makeText(context, "No Records Available", Toast.LENGTH_SHORT).show();
             Toast.makeText(context, "Or Check your Internet Connection", Toast.LENGTH_SHORT).show();
         }
-        else {
+        else if(list.size()!=0){
             progressDialog.setTitle("Loading Records...");
             progressDialog.show();
             progressDialog.setCancelable(false);
