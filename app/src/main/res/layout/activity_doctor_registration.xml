@@ -270,6 +270,7 @@
                 android:text="Tap On Below Button To PIN Your Location" />
 
             <LinearLayout
+                android:id="@+id/location_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
