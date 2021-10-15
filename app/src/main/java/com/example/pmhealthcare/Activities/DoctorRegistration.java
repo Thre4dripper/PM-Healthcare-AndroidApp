@@ -257,7 +257,9 @@ public class DoctorRegistration extends AppCompatActivity implements DegreesRecy
                 .append(experience.getText()).append("\n");
 
         builder.append("location-")
-                .append(location[0]).append(",").append(location[1]);
+                .append(location[0]).append(",").append(location[1]).append("\n");
+
+        builder.append("HEALTH_ID-").append(Firebase.UNIQUE_HEALTH_ID);
 
 
         Intent intent = new Intent(Intent.ACTION_SENDTO);

@@ -25,6 +25,7 @@
             android:padding="16dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/current_doctor_dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/profile_image"
@@ -38,6 +39,7 @@
                 android:layout_marginStart="16dp">
 
                 <TextView
+                    android:id="@+id/current_doctor_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Doctor Name"
@@ -46,9 +48,16 @@
                     />
 
                 <TextView
+                    android:id="@+id/current_doctor_qualification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Qualification"/>
+
+                <TextView
+                    android:id="@+id/current_doctor_speciality"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Speciality"/>
 
             </LinearLayout>
         </LinearLayout>
