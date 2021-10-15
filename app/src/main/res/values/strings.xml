@@ -2,4 +2,8 @@
     <string name="app_name">PM Healthcare</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="doctor_registration_instructions"><strong><i>Note:-</i></strong> By Clicking <strong>Register</strong> your above filled Information will be forwarded to Gmail,
+        Kindly attach all the  <strong>Documents</strong> in the mail related to what you have filled in the above Information.
+        If any of the Information found to be  <strong>Fake</strong>, your account might permanently be  <strong>Banned</strong></string>
 </resources>

@@ -36,7 +36,7 @@ public class DigidocFragment extends Fragment implements View.OnClickListener {
         View view=inflater.inflate(R.layout.fragment_digidoc, container, false);
 
         recyclerView=view.findViewById(R.id.digiDoc_recycler_view);
-        docRegistrationButton =view.findViewById(R.id.register_doctor_button);
+        docRegistrationButton =view.findViewById(R.id.doctor_registration_card_button);
 
         InitUIElements();
 
