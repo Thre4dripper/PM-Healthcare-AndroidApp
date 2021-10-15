@@ -7,7 +7,7 @@
     tools:context=".Activities.DoctorRegistration">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageView"
+        android:id="@+id/doctor_registration_Dp"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:src="@drawable/profile_image"
@@ -24,7 +24,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/doctor_registration_Dp" />
 
     <View
         android:id="@+id/divider"

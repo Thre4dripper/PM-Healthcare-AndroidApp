@@ -10,12 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,19 +27,32 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.pmhealthcare.Adapters.DegreesRecyclerAdapter;
+import com.example.pmhealthcare.Fragments.ProfileFragment;
+import com.example.pmhealthcare.Networking.Firebase;
 import com.example.pmhealthcare.R;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class DoctorRegistration extends AppCompatActivity implements DegreesRecyclerAdapter.degreesOnClickInterface,
         View.OnClickListener,LocationListener {
 
+    CircleImageView userDp;
     RecyclerView recyclerView;
     DegreesRecyclerAdapter recyclerAdapter;
 
@@ -52,6 +69,7 @@ public class DoctorRegistration extends AppCompatActivity implements DegreesRecy
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_registration);
 
+        userDp=findViewById(R.id.doctor_registration_Dp);
         recyclerView=findViewById(R.id.degrees_recycler_view);
 
         qualification =findViewById(R.id.qualification_edit_text);
@@ -71,6 +89,9 @@ public class DoctorRegistration extends AppCompatActivity implements DegreesRecy
     }
 
     public void InitUIElements(){
+
+        setUserDp();
+
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,LinearLayoutManager.HORIZONTAL));
 
         recyclerAdapter=new DegreesRecyclerAdapter(this,degreesList,this);
@@ -81,12 +102,14 @@ public class DoctorRegistration extends AppCompatActivity implements DegreesRecy
         locationButton.setOnClickListener(this);
     }
 
+    /**=========================================== METHOD FOR REMOVE DEGREES ============================================**/
     @Override
     public void degreeOnClick(int position) {
         degreesList.remove(position);
         recyclerAdapter.notifyItemRemoved(position);
     }
 
+    /**=========================================== ONCLICK METHOD ============================================**/
     @Override
     public void onClick(View v) {
         if(v==addDegreeButton) {
@@ -145,6 +168,7 @@ public class DoctorRegistration extends AppCompatActivity implements DegreesRecy
         else Toast.makeText(this, "Permission not Granted", Toast.LENGTH_SHORT).show();
     }
 
+    /**===================================  METHOD FOR CHECKING VALIDITY OF ALL THE FIELDS ==================================**/
     public void Register(){
 
         boolean allClear=true;
@@ -203,6 +227,7 @@ public class DoctorRegistration extends AppCompatActivity implements DegreesRecy
                 .show();
     }
 
+    /**========================================= METHOD FOR CREATING REGISTRATION MAIL =========================================**/
     public void SendRegisterMail(){
         StringBuilder builder=new StringBuilder();
         builder.append("Degrees-");
@@ -243,4 +268,12 @@ public class DoctorRegistration extends AppCompatActivity implements DegreesRecy
 
         startActivity(intent);
     }
+
+    public void setUserDp() {
+
+        if(ProfileFragment.userDpUri!=null)
+            Glide.with(this).load(ProfileFragment.userDpUri).into(userDp);
+
+    }
+
 }
