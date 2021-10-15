@@ -4,23 +4,24 @@ import android.net.Uri;
 
 public class DoctorDetails {
 
+    String doctorName;
     Uri doctorDp;
     String healthID;
-    String qualification;
+    String qualifications;
     String institution;
     String specialization;
-    int registrationNumber;
-    int helpLineNumber;
-    int experience;
-    int[] locationCoordinates;
+    long registrationNumber;
+    long helpLineNumber;
+    long experience;
+    String locationCoordinates;
     String status;
 
-    public DoctorDetails(Uri doctorDp, String healthID, String qualification, String institution, String specialization, int registrationNumber,
-                         int helpLineNumber, int experience, int[] locationCoordinates, String status) {
-
+    public DoctorDetails(String doctorName, Uri doctorDp, String healthID, String qualifications, String institution, String specialization,
+                         long registrationNumber, long helpLineNumber, long experience, String locationCoordinates, String status) {
+        this.doctorName = doctorName;
         this.doctorDp = doctorDp;
         this.healthID = healthID;
-        this.qualification = qualification;
+        this.qualifications = qualifications;
         this.institution = institution;
         this.specialization = specialization;
         this.registrationNumber = registrationNumber;
@@ -28,6 +29,14 @@ public class DoctorDetails {
         this.experience = experience;
         this.locationCoordinates = locationCoordinates;
         this.status = status;
+    }
+
+    public String getDoctorName() {
+        return doctorName;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
     }
 
     public Uri getDoctorDp() {
@@ -46,12 +55,12 @@ public class DoctorDetails {
         this.healthID = healthID;
     }
 
-    public String getQualification() {
-        return qualification;
+    public String getQualifications() {
+        return qualifications;
     }
 
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
+    public void setQualifications(String qualifications) {
+        this.qualifications = qualifications;
     }
 
     public String getInstitution() {
@@ -70,35 +79,35 @@ public class DoctorDetails {
         this.specialization = specialization;
     }
 
-    public int getRegistrationNumber() {
+    public long getRegistrationNumber() {
         return registrationNumber;
     }
 
-    public void setRegistrationNumber(int registrationNumber) {
+    public void setRegistrationNumber(long registrationNumber) {
         this.registrationNumber = registrationNumber;
     }
 
-    public int getHelpLineNumber() {
+    public long getHelpLineNumber() {
         return helpLineNumber;
     }
 
-    public void setHelpLineNumber(int helpLineNumber) {
+    public void setHelpLineNumber(long helpLineNumber) {
         this.helpLineNumber = helpLineNumber;
     }
 
-    public int getExperience() {
+    public long getExperience() {
         return experience;
     }
 
-    public void setExperience(int experience) {
+    public void setExperience(long experience) {
         this.experience = experience;
     }
 
-    public int[] getLocationCoordinates() {
+    public String getLocationCoordinates() {
         return locationCoordinates;
     }
 
-    public void setLocationCoordinates(int[] locationCoordinates) {
+    public void setLocationCoordinates(String locationCoordinates) {
         this.locationCoordinates = locationCoordinates;
     }
 
