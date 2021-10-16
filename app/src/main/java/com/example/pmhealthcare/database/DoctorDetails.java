@@ -15,9 +15,13 @@ public class DoctorDetails {
     long experience;
     String locationCoordinates;
     String status;
+    String district;
+    String address;
 
-    public DoctorDetails(String doctorName, Uri doctorDp, String healthID, String qualifications, String institution, String specialization,
-                         long registrationNumber, long helpLineNumber, long experience, String locationCoordinates, String status) {
+    public DoctorDetails(String doctorName, Uri doctorDp, String healthID, String qualifications, String institution,
+                         String specialization, long registrationNumber, long helpLineNumber, long experience, String locationCoordinates,
+                         String status, String district, String address) {
+
         this.doctorName = doctorName;
         this.doctorDp = doctorDp;
         this.healthID = healthID;
@@ -29,7 +33,10 @@ public class DoctorDetails {
         this.experience = experience;
         this.locationCoordinates = locationCoordinates;
         this.status = status;
+        this.district = district;
+        this.address = address;
     }
+
 
     public String getDoctorName() {
         return doctorName;
@@ -117,5 +124,21 @@ public class DoctorDetails {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

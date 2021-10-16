@@ -23,6 +23,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -156,6 +157,7 @@ public class DoctorRegistration extends AppCompatActivity implements DegreesRecy
             this.location=new double[2];
             this.location[0]=location.getLatitude();
             this.location[1]=location.getLongitude();
+        Toast.makeText(this, this.location[0]+","+this.location[1], Toast.LENGTH_SHORT).show();
     }
 
     @Override

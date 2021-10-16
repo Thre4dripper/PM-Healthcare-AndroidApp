@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.pmhealthcare.Activities.DoctorRegistration;
+import com.example.pmhealthcare.Activities.DoctorVisit;
 import com.example.pmhealthcare.Adapters.DigiDocRecyclerAdapter;
 import com.example.pmhealthcare.R;
 import com.example.pmhealthcare.database.DoctorDetails;
@@ -30,11 +32,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class DigidocFragment extends Fragment implements View.OnClickListener {
+public class DigidocFragment extends Fragment implements View.OnClickListener, DigiDocRecyclerAdapter.DigiDocOnClickInterface {
 
     private static final String TAG = "digiDoc";
     RecyclerView recyclerView;
@@ -42,7 +45,7 @@ public class DigidocFragment extends Fragment implements View.OnClickListener {
 
     CardView docRegistrationButton;
 
-    List<DoctorDetails> doctorDetailsList=new ArrayList<>();
+    public static List<DoctorDetails> doctorDetailsList=new ArrayList<>();
 
     public DigidocFragment() {
         // Required empty public constructor
@@ -64,10 +67,12 @@ public class DigidocFragment extends Fragment implements View.OnClickListener {
 
     /**==================================== METHOD FOR INITIALIZING UI ELEMENTS =================================**/
     public void InitUIElements(){
+        doctorDetailsList.clear();
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
 
-        recyclerAdapter=new DigiDocRecyclerAdapter(getContext(),doctorDetailsList);
+        recyclerAdapter=new DigiDocRecyclerAdapter(getContext(),doctorDetailsList,this);
         recyclerView.setAdapter(recyclerAdapter);
 
         OpenRegistrationPage();
@@ -106,7 +111,9 @@ public class DigidocFragment extends Fragment implements View.OnClickListener {
                                    snapshot.getLong("helpLineNumber"),
                                    snapshot.getLong("experience"),
                                    snapshot.getString("locationCoordinates"),
-                                   snapshot.getString("status")
+                                   snapshot.getString("status"),
+                                   snapshot.getString("district"),
+                                   snapshot.getString("address")
                            ));
                         }
                         recyclerAdapter.notifyDataSetChanged();
@@ -118,5 +125,12 @@ public class DigidocFragment extends Fragment implements View.OnClickListener {
                 Log.d(TAG, "onFailure: failed");
             }
         });
+    }
+
+    @Override
+    public void digiOnClick(int position) {
+        Intent intent=new Intent(getContext(), DoctorVisit.class);
+        intent.putExtra("currentDigiDoctorIndex",position);
+        startActivity(intent);
     }
 }
