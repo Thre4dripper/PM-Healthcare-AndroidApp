@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,10 +24,18 @@ public class DigiDocRecyclerAdapter extends RecyclerView.Adapter<DigiDocRecycler
     public Context mContext;
 
     List<DoctorDetails> list;
-    public DigiDocRecyclerAdapter(Context context,List<DoctorDetails> list){
+    public DigiDocRecyclerAdapter(Context context,List<DoctorDetails> list,DigiDocOnClickInterface onClickInterface){
         this.mContext=context;
         this.list=list;
+
+        digiDocOnClickInterface=onClickInterface;
     }
+
+    public interface DigiDocOnClickInterface{
+        void digiOnClick(int position);
+    }
+
+    DigiDocOnClickInterface digiDocOnClickInterface;
 
     @NonNull
     @Override
@@ -57,6 +66,8 @@ public class DigiDocRecyclerAdapter extends RecyclerView.Adapter<DigiDocRecycler
         CircleImageView doctorDp;
         TextView doctorName,doctorQualification,doctorSpeciality;
 
+        CardView cardView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -64,6 +75,14 @@ public class DigiDocRecyclerAdapter extends RecyclerView.Adapter<DigiDocRecycler
             doctorName=itemView.findViewById(R.id.current_doctor_name);
             doctorQualification=itemView.findViewById(R.id.current_doctor_qualification);
             doctorSpeciality=itemView.findViewById(R.id.current_doctor_speciality);
+
+            cardView=itemView.findViewById(R.id.digidoc_card_view);
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    digiDocOnClickInterface.digiOnClick(getAdapterPosition());
+                }
+            });
         }
     }
 }

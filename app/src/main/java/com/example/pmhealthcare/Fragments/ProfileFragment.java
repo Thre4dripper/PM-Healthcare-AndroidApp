@@ -174,20 +174,26 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onSuccess(Uri uri) {
 
-                    Glide.with(getContext()).load(uri).addListener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            progressDialog.dismiss();
-                            return false;
-                        }
+                    if(uri!=null)
+                    {
+                        Glide.with(getContext()).load(uri).addListener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                progressDialog.dismiss();
+                                return false;
+                            }
 
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                           progressDialog.dismiss();
-                            return false;
-                        }
-                    }).into(userDp);
-                    userDpUri=uri;
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                progressDialog.dismiss();
+                                return false;
+                            }
+                        }).into(userDp);
+
+                        userDpUri=uri;
+                    }
+                    else progressDialog.dismiss();
+
                 }
             });
         }
@@ -220,6 +226,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         if(resultCode==RESULT_OK  && requestCode==150){
             userDp.setImageURI(data.getData());
+            userDpUri=data.getData();
             //User.setUserDp(getContext(),data.getData().toString());
             Firebase.setUserDP(getContext(),data.getData());
         }
