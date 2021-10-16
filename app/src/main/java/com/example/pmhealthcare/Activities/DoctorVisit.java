@@ -106,7 +106,7 @@ public class DoctorVisit extends AppCompatActivity implements LocationListener {
 
                 String[] doctorLocation=doctorDetails.getLocationCoordinates().split(",");
 
-                Uri gmmIntentUri = Uri.parse("geo:28.5849,78.4194");
+                Uri gmmIntentUri = Uri.parse("geo:28.582075,78.573508");
 
                 // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
