@@ -63,7 +63,7 @@ public class DoctorRegistration extends AppCompatActivity implements DegreesRecy
     LinearLayout locationButton;
 
     List<String> degreesList=new ArrayList<>();
-    double[] location;
+    double[] location={0.0,0.0};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +135,7 @@ public class DoctorRegistration extends AppCompatActivity implements DegreesRecy
                 //getting Location
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                     LocationManager lm=(LocationManager)getSystemService(LOCATION_SERVICE);
-                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,  this);
+                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10,  this);
                     Toast.makeText(this,"Location Pinned.",Toast.LENGTH_SHORT).show();
                 }
 
@@ -143,7 +143,7 @@ public class DoctorRegistration extends AppCompatActivity implements DegreesRecy
             }else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     ActivityCompat.requestPermissions(DoctorRegistration.this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},
                             451);
                 }
                 // Location permission not granted
@@ -152,12 +152,17 @@ public class DoctorRegistration extends AppCompatActivity implements DegreesRecy
         }
     }
 
+    int counter=0;
     @Override
     public void onLocationChanged(@NonNull Location location) {
-            this.location=new double[2];
+        if(counter==0)
+        {
             this.location[0]=location.getLatitude();
             this.location[1]=location.getLongitude();
-        Toast.makeText(this, this.location[0]+","+this.location[1], Toast.LENGTH_SHORT).show();
+            counter++;
+        }
+
+        //Toast.makeText(this, this.location[0]+","+this.location[1], Toast.LENGTH_SHORT).show();
     }
 
     @Override
