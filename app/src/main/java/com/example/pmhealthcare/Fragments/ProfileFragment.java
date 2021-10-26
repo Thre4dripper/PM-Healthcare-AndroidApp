@@ -161,7 +161,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         ProgressDialog progressDialog=new ProgressDialog(getContext());
         progressDialog.setTitle("Please Wait...");
         progressDialog.show();
-        progressDialog.setCancelable(false);
+        //progressDialog.setCancelable(false);
 
         //checking internet connectivity
         ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(CONNECTIVITY_SERVICE);

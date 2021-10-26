@@ -125,4 +125,19 @@ public class DoctorVisit extends AppCompatActivity implements LocationListener {
         this.userLocation[0]= String.valueOf(location.getLatitude());
         this.userLocation[1]= String.valueOf(location.getLongitude());
     }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
 }
